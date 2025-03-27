@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="log_reference_report">
+           <t t-call="web.html_container">
+               <t t-foreach="docs" t-as="log">
+                   <t t-call="web.external_layout">
+                       <div class="page">
+                           <div class="oe_structure"/>
+                           <h2>XML Report</h2>
+                           <p><span id="xmlData" t-field="log.attachmentRef.datas"/></p>
+                           
+                            <style>
+                                table, tbody,tr, td {
+                                  padding: 10px;
+                                  border: none; !impotant
+                                }
+                            </style>
+                            <section id="mainInfo" style="width:100%;">
+                                <table style="border: 0px none;">
+                                    <tr>
+                                        <td id="qrContainer" style="width:25%;">
+                                            <div id="qrCode"></div>
+                                        </td>
+                                        <td id="firstInfo" style="width:25%;">
+                                            <div style="color: gray;" id="emisor"></div>
+                                            <div id="rfc"></div>
+                                            <br/>
+                                            <div style="color: gray;">REGIMEN FISCAL</div>
+                                            <div id="fiscalRegimen"></div>
+                                            <br/>
+                                            <div style="color: gray;">LUGAR DE EXPEDICIÓN: <span style="color: black;" id="expeditionPlace"></span></div>
+                                        </td>
+                                        <td id="secondInfo" style="width:25%;">
+                                            <div style="color: gray;">FOLIO: <span style="color: black;" id="folio"></span></div>
+                                            <div style="color: gray;">FOLIO FISCAL:</div>
+                                            <div id="folioFiscal"></div>
+                                            <br/>
+                                            <div style="color: gray;">FECHA Y HORA DE EMOSION: <span style="color: black;" id="emisionTimeAndDate"></span></div>
+                                            <div style="color: gray;">FECHA Y HORA DE CERTIFICACION:</div>
+                                            <div id="certificationTimeAndDate"></div>
+                                            <div style="color: gray;">NUMERO DE SERIE DEL CERTIFICADO SAT:</div>
+                                            <div id="satCertificateNum"></div>
+                                            <div style="color: gray;">NUMERO DE SERIE DEL CERTIFICADO DEL EMISOR:</div>
+                                            <div id="emisorCertificateNum"></div>
+                                        </td>
+                                        <td id="thirdInfo" style="width:25%;">
+                                            <div style="color: gray;" id="reciverName"></div>
+                                            <div id="reciverRfc"></div>
+                                            <br/>
+                                            <div style="color: gray;">RESIDENCIA FISCAL: <span style="color: black;" id="fiscalHome"></span></div>
+                                            <div style="color: gray;">NumRegidTrib: <span style="color: black;" id="NumRegidTrib"></span></div>
+                                            <div style="color: gray;">USO CFDI:</div>
+                                            <div id="cfdiUse"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </section>
+                            <br/>
+                            <section id="componentsAdPrices" style="width:100%;">
+                                <hr/>
+                                <div style="text-align: center; color: gray; font-size: x-large;">Comprobante Fiscal Digital</div>
+                                <hr/>
+                                <table id="componentsData" style="border: 0px none; width:100%;">
+                                    <tr>
+                                        <td style="width:7.5%; color: gray;">CANT</td>
+                                        <td style="width:7.5%; color: gray;">UNIDAD</td>
+                                        <td style="width:7.5%; color: gray;">CLAVE</td>
+                                        <td style="width:7.5%; color: gray;">CLAVE PROD/SERV</td>
+                                        <td style="width:7.5%; color: gray;">CLAVE UNIDAD</td>
+                                        <td style="width:40%; color: gray;">DESCRIPCIÓN</td>
+                                        <td style="width:7.5%; color: gray;">VALOR UNITARIO</td>
+                                        <td style="width:7.5%; color: gray;">IMPORTE</td>
+                                        <td style="width:7.5%; color: gray;">DESCUENTO</td>
+                                    </tr>
+                                </table>
+                                <hr/>
+                            </section>
+                            <section id="taxesTotalResume">
+                                <table style=" border: 0px none; width:100%;">
+                                    <tr>
+                                        <td style="width:75%;">
+                                            <div style="color: gray;">CONDICIONES DE PAGO: <span style="color: black;" id="paymentCond"></span></div>
+                                            <div style="color: gray;">FORMA DE PAGO: <span style="color: black;" id="paymentForm"></span></div>
+                                            <div style="color: gray;">METODO DE PAGO: <span style="color: black;" id="paymentMethod"></span></div>
+                                            <br/>
+                                            <div style="color: gray;">CFDI RELACIONADOS: <span style="color: black;" id="relatedCfid"></span></div>
+                                        </td>
+                                        <td style="width:25%;">
+                                            <table style="border: 0px none;">
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">SUBTOTAL</td>
+                                                    <td id="subTotal" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">DESCUENTO</td>
+                                                    <td id="discount" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">IVA 0%</td>
+                                                    <td id="iva0%" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">IVA 8%</td>
+                                                    <td id="iva8%" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">IVA 16%</td>
+                                                    <td id="iva16%" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">IEPS</td>
+                                                    <td id="ieps" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">IVA Retenido</td>
+                                                    <td id="ivaRetention" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">ISR Retenido</td>
+                                                    <td id="isrRetention" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">Impuestos Locales Retenidos</td>
+                                                    <td id="localTaxRetention" style="text-align: right;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: right; color: gray;">Impuestos Locales Traslados</td>
+                                                    <td id="transportLocalTax" style="text-align: right;"></td>
+                                                </tr>
+                                            </table>
+                                            <hr/>
+                                            <br/>
+                                            <br/>
+                                            <table style="border: 0px none; width:100%;">
+                                                <tr>
+                                                    <td style="text-align: right; width: 65%; color: gray;">TOTAL</td>
+                                                    <td id="total" style="text-align: right;"></td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </section>
+                            <section id="currencyInfo">
+                                <div style="text-align: right; color: gray;">MONEDA: <span style="color: black;" id="currency"></span> TIPO DE CAMBIO: <span style="color: black;" id="currencyChange"></span></div>
+                            </section>
+                            <section id="seals" style="width:100%;">
+                                <br/>
+                                <div style="color: gray;">SELLO DIGITAL DEL SAT:</div>
+                                <div id="digitalSealSat"></div>
+                                <div style="color: gray;">SELLO DIGITAL DEL EMISOR:</div>
+                                <div id="digitalSealEmisor"></div>
+                                <div style="color: gray;">CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACIÓN DIGITAL DEL SAT:</div>
+                                <div id="digitalSatComplementChain"></div>
+                            </section>                           
+
+                            <script type="text/javascript">
+                                var xmlData = document.getElementById("xmlData").innerText
+                                var decodedData =  decodeURIComponent(escape(window.atob(xmlData)))
+
+                                document.getElementById("xmlData").innerText = ""
+                                var parser = new DOMParser()
+                                var xmlDoc = parser.parseFromString(decodedData,"text/xml")
+                                function getSafeValue(fatherName, attributeName){
+            
+                                    var father = xmlDoc.getElementsByTagName(fatherName)[0]
+                                    var attributValue = father.attributes.getNamedItem(attributeName)
+                                    if(attributValue != null)
+                                        return attributValue.value
+                                    else
+                                        return ""
+
+                                }
+                                
+
+                                document.getElementById("expeditionPlace").innerText = getSafeValue("Comprobante","LugarExpedicion")
+                                document.getElementById("folio").innerText = getSafeValue("Comprobante","Folio")
+                                document.getElementById("emisionTimeAndDate").innerText = getSafeValue("Comprobante","Fecha")
+                                document.getElementById("emisorCertificateNum").innerText = getSafeValue("Comprobante","NoCertificado")
+
+                                document.getElementById("paymentCond").innerText = getSafeValue("Comprobante","CondicionesDePago")
+                                document.getElementById("paymentForm").innerText = getSafeValue("Comprobante","FormaPago")
+                                document.getElementById("paymentMethod").innerText = getSafeValue("Comprobante","MetodoPago")
+
+                                document.getElementById("subTotal").innerText = getSafeValue("Comprobante","SubTotal")
+                                document.getElementById("discount").innerText = getSafeValue("Comprobante","Descuento")
+
+                                document.getElementById("total").innerText = getSafeValue("Comprobante","Total")
+
+                                document.getElementById("currency").innerText = getSafeValue("Comprobante","Moneda")
+                                document.getElementById("currencyChange").innerText = getSafeValue("Comprobante","TipoCambio")
+
+                                document.getElementById("emisor").innerText = getSafeValue("Emisor","Nombre")
+                                document.getElementById("rfc").innerText = getSafeValue("Emisor","Rfc")
+                                document.getElementById("fiscalRegimen").innerText = getSafeValue("Emisor","RegimenFiscal")
+
+                                document.getElementById("reciverName").innerText = getSafeValue("Receptor","Nombre")
+                                document.getElementById("reciverRfc").innerText = getSafeValue("Receptor","Rfc")
+                                document.getElementById("fiscalHome").innerText = getSafeValue("Receptor","DomicilioFiscalReceptor")
+                                document.getElementById("NumRegidTrib").innerText = getSafeValue("Receptor","RegimenFiscalReceptor")
+                                document.getElementById("cfdiUse").innerText = getSafeValue("Receptor","UsoCFDI")
+
+                                document.getElementById("folioFiscal").innerText = getSafeValue("TimbreFiscalDigital","UUID")
+                                document.getElementById("certificationTimeAndDate").innerText = getSafeValue("TimbreFiscalDigital","FechaTimbrado")
+                                document.getElementById("satCertificateNum").innerText = getSafeValue("TimbreFiscalDigital","NoCertificadoSAT")
+
+                                document.getElementById("digitalSealSat").innerText = getSafeValue("TimbreFiscalDigital","SelloSAT")
+                                document.getElementById("digitalSealEmisor").innerText = getSafeValue("TimbreFiscalDigital","SelloCFD")
+                                document.getElementById("digitalSatComplementChain").innerText = getSafeValue("TimbreFiscalDigital","")
+
+                                var productContainer = document.getElementById("componentsData")
+                                var tableFormat = decodeURIComponent('%3Ctr%20id%3D%22product0%22%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22qty%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22unit%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22key%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22keyProd%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22keyUnit%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A40%25%3B%22%20id%3D%22description%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22unitValue%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22import%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22disc%22%3E%3C%2Ftd%3E%3C%2Ftr%3E')
+
+                                function getSafeValueFromComponent(component, attributeName){
+
+                                    var value = component.attributes.getNamedItem(attributeName)
+                                    if(value != null)
+                                        return value.value
+                                    else
+                                        return ""
+
+                                }
+                                function getSafeChildItem(component,childName){
+                                    var value = component.getElementsByTagName(childName)[0]
+                                    if(value != null)
+                                        return value
+                                    else
+                                        return ""
+                                }
+                                var tax16 = 0.00
+                                var tax8 = 0.00
+                                var tax0 = 0.00
+                                var ieps = 0.00
+                                var ivaRetenido = 0.00
+                                var isrRetentido = 0.00
+
+                                function returnProducts(){
+                                    var parser = new DOMParser();
+                                    var components = xmlDoc.getElementsByTagName("Concepto")
+                                    for(var count = 0; count != components.length; count++){
+                                        tableFormat = decodeURIComponent('%3Ctr%20id%3D%22product0%22%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22qty%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22unit%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22key%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22keyProd%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22keyUnit%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A40%25%3B%22%20id%3D%22description%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22unitValue%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22import%22%3E%3C%2Ftd%3E%3Ctd%20style%3D%22width%3A7.5%25%3B%22%20id%3D%22disc%22%3E%3C%2Ftd%3E%3C%2Ftr%3E')
+                                        
+                                        tableFormat = tableFormat.replace(' id="qty"',' id="qty'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="unit"',' id="unit'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="key"',' id="key'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="keyProd"',' id="keyProd'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="keyUnit"',' id="keyUnit'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="description"',' id="description'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="unitValue"',' id="unitValue'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="import"',' id="import'+count+'"')
+                                        tableFormat = tableFormat.replace(' id="disc"',' id="disc'+count+'"')
+                                        tableFormat = tableFormat.replace('id="product0"', 'id="product'+count+'"')
+                                        
+                                        productContainer.innerHTML += tableFormat
+                                        document.getElementById("qty"+count).innerText = getSafeValueFromComponent(components[count],"Cantidad")
+                                        document.getElementById("unit"+count).innerText = getSafeValueFromComponent(components[count],"Unidad")
+                                        document.getElementById("key"+count).innerText = getSafeValueFromComponent(components[count],"")
+                                        document.getElementById("keyProd"+count).innerText = getSafeValueFromComponent(components[count],"ClaveProdServ")
+                                        document.getElementById("keyUnit"+count).innerText = getSafeValueFromComponent(components[count],"ClaveUnidad")
+                                        document.getElementById("description"+count).innerText = getSafeValueFromComponent(components[count],"Descripcion")
+                                        document.getElementById("unitValue"+count).innerText = getSafeValueFromComponent(components[count],"ValorUnitario")
+                                        document.getElementById("import"+count).innerText = getSafeValueFromComponent(components[count],"Importe")
+                                        var discVal = getSafeValueFromComponent(components[count],"Descuento")
+                                        document.getElementById("disc"+count).innerText =  discVal != "" ? discVal : "0.00"
+
+                                         var impuestos = getSafeChildItem(components[count],"Impuestos")
+                                         
+                                         if(impuestos != ""){
+                                            var traslados = getSafeChildItem(impuestos,"Traslados")
+                                            if(traslados != "")
+                                                if(traslados.childNodes.length != 3){
+                                                    for(var j = 0; j != traslados.childNodes.length; j++){
+                                                        if(traslados.childNodes[j].nodeName == "cfdi:Traslado"){
+                                                            var taxType = parseInt( getSafeValueFromComponent(traslados.childNodes[j],"Impuesto"))
+                                                            if( taxType== 1){
+                                                                isrRetentido += parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"Importe"))
+                                                            }else if (taxType == 2){
+                                                                var taxPercentage = 100 * parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"TasaOCuota"))
+                                                                if(taxPercentage == 16)
+                                                                tax16 += parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"Importe"))
+                                                            else if (taxPercentage == 8)
+                                                                tax8 += parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"Importe"))
+                                                            else if (taxPercentage == 0)
+                                                                tax0 += parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"Importe"))
+                                                            }else if (taxType == 3){
+                                                                ieps += parseFloat(getSafeValueFromComponent(traslados.childNodes[j],"Importe"))
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                }else{
+                                                    var traslado = getSafeChildItem(impuestos,"Traslado")
+                                                    if(traslado != ""){
+                                                        var taxType = parseInt( getSafeValueFromComponent(traslado,"Impuesto"))
+                                                        if( taxType== 1){
+                                                            isrRetentido += parseFloat(getSafeValueFromComponent(traslado,"Importe"))
+                                                        }else if (taxType == 2){
+                                                            var taxPercentage = 100 * parseFloat(getSafeValueFromComponent(traslado,"TasaOCuota"))
+                                                            if(taxPercentage == 16)
+                                                            tax16 += parseFloat(getSafeValueFromComponent(traslado,"Importe"))
+                                                        else if (taxPercentage == 8)
+                                                            tax8 += parseFloat(getSafeValueFromComponent(traslado,"Importe"))
+                                                        else if (taxPercentage == 0)
+                                                            tax0 += parseFloat(getSafeValueFromComponent(traslado,"Importe"))
+                                                        }else if (taxType == 3){
+                                                            ieps += parseFloat(getSafeValueFromComponent(traslado,"Importe"))
+                                                        }
+
+                                                    }
+                                                }
+                                            var retenciones = getSafeChildItem(impuestos,"Retenciones")
+                                            if(retenciones != "")
+                                                if(retenciones.childNodes.length != 3) {
+                                                    for(var j = 0; j != retenciones.childNodes.length; j++){
+                                                        if(retenciones.childNodes[j].nodeName == "cfdi:Retencion"){
+                                                            var taxType = parseInt( getSafeValueFromComponent(retenciones.childNodes[j],"Impuesto"))
+                                                            if( taxType== 1){
+                                                                isrRetentido += parseFloat(getSafeValueFromComponent(retenciones.childNodes[j],"Importe"))
+                                                            }else if (taxType == 2){
+                                                                ivaRetenido += parseFloat(getSafeValueFromComponent(retenciones.childNodes[j],"Importe"))
+                                                            }else if (taxType == 3){
+                                                                ieps += parseFloat(getSafeValueFromComponent(retenciones.childNodes[j],"Importe"))
+                                                            }
+
+                                                        }
+                                                    }
+                                                }else{
+                                                
+                                                    var retencion = getSafeChildItem(impuestos,"Retencion")
+                                                    if(retencion != ""){
+                                                        var taxType = parseInt( getSafeValueFromComponent(retencion,"Impuesto"))
+                                                        if( taxType== 1){
+                                                            isrRetentido += parseFloat(getSafeValueFromComponent(retencion,"Importe"))
+                                                        }else if (taxType == 2){
+                                                            ivaRetenido += parseFloat(getSafeValueFromComponent(retencion,"Importe"))
+                                                        }else if (taxType == 3){
+                                                            ieps += parseFloat(getSafeValueFromComponent(retencion,"Importe"))
+                                                        }
+
+                                                    }
+                                                }
+                            
+                                         }
+
+
+
+                                    }                                    
+                                    return tableFormat
+                                }
+                                returnProducts()
+
+                                var comprobante = xmlDoc.getElementsByTagName("Comprobante")[0]
+                                var childs = comprobante.childNodes
+
+                                for(var i = 0; i != childs.length; i++){
+
+                                    if(childs[i].nodeName == "cfdi:Impuestos"){
+                                        document.getElementById("localTaxRetention").innerText = getSafeValueFromComponent(childs[i],"TotalImpuestosRetenidos") != "" ? getSafeValueFromComponent(childs[i],"TotalImpuestosRetenidos") : 0
+                                        document.getElementById("transportLocalTax").innerText = getSafeValueFromComponent(childs[i],"TotalImpuestosTrasladados") != "" ? getSafeValueFromComponent(childs[i],"TotalImpuestosTrasladados") : 0 
+                                    }
+                                }
+                                document.getElementById("iva0%").innerText = tax0
+                                document.getElementById("iva8%").innerText = tax8
+                                document.getElementById("iva16%").innerText = tax16
+                                document.getElementById("ieps").innerText = ieps
+                                document.getElementById("ivaRetention").innerText = ivaRetenido
+                                document.getElementById("isrRetention").innerText = isrRetentido
+                                if(document.getElementById("discount").innerText == "")
+                                    document.getElementById("discount").innerText = 0
+
+                            </script>
+
+                       </div>
+                   </t>
+               </t>
+           </t>
+        </template>
+   </data>
+</odoo>

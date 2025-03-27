@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_packing_fin_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+
+                    <style>
+                        .table {
+                            border-collapse: collapse; 
+                            width: 100%; 
+                        }
+                        .th,td {
+                            border: 1px solid black; 
+                            padding: 8px; 
+                            text-align: left; 
+                        }
+
+                        .th {
+                            background-color: #f2f2f2; 
+                            font-weight: bold; 
+                        }
+                    </style>
+
+                    <div style="position:relative; ">
+                        <img src="https://s3.amazonaws.com/promoboxx-api/brands/logos/3503/original/Horizon_Trailers_-_logo__black_orange_grey_contour_-_Randy_Thiessen.png?1708460359" alt="Logo" style="width: 400px;  height: auto;" />
+                    </div>
+
+                    <div>
+                        <t style=" font-weight: bold; margin-top:10px; text-align:right; right:50px;  font-size:15px;" t-esc="auto_data['date']" />
+                        <br>
+                        </br>
+                        <br>
+                            <t style="font-weight: bold; margin-top:20px; text-align:right; right:50px;  font-size:15px;" t-esc="auto_data['invoice_number']" />
+                        </br>
+
+                    </div>
+
+                    <h2 style="position:absolute; right:70px; margin-top:10px; font-size:35px; font-weight: bold;">Packing Slip &amp; BOL</h2>
+                    <h2 style="position:absolute; margin-top: 50px; text-align: right; right:30px;  font-size:18px;   font-weight: bold;">HORIZON TRAILERS LLC</h2>
+                    <h2 style="position:absolute; margin-top: 70px; text-align: right; right:50px;  font-size:18px;  font-weight: lighter;">1163 HORIZON BLVD</h2>
+                    <h2 style="position:absolute; margin-top: 90px; text-align: right; right:50px;  font-size:18px;   font-weight: lighter;">EL PASO,TX.79927</h2>
+                    <h2 style="position:absolute; margin-top: 120px; text-align: right; right:50px;   font-size:18px;   font-weight: lighter;">USA</h2>
+                    <h2 style="position:relative; margin-top: 150px; text-align: right; right:50px;  font-size:15px;  lighter">LOGISTICA 614-980-0499 ext.2004 logistics@horizontrailers.com</h2>
+                    <h2 style="position:relative; margin-top: 20px; text-align: right; right:50px;  font-size:15px;  lighter">FINANZAS 625-105-0019 ext.2004 payables@horizontrailers.com</h2>
+
+                    <h2 style="position:center; left:150px;  font-size:15px;  font-weight: lighter;">ATTENTION DRIVES</h2>
+                    <h2 style="position:center; left:150px;  font-size:15px;   font-weight: lighter;">MUST MAKE APPOINTMENT</h2>
+                    <h2 style="position:center; left:150px;  font-size:15px;   font-weight: lighter;">WITH LOGISTICS FOR UNLOADING</h2>
+
+                    <div style="position:relative; margin-top: 20px; text-align: right; right:50px;  font-size:15px; font-weight: bold;">
+                        <h2 style="position:relative; margin-top: 20px; text-align: right; right:50px;  font-size:15px; font-weight: bold;">CONSIGNEE (BILL TO):</h2>
+                        <h2 style="position:relative; margin-top: 20px; text-align: right; right:45px;  font-size:15px; font-weight: bold;">Brechbill Trailer Sales LLC</h2>
+                        <br>
+                            <t style="position:absolute; margin-top: 150px; text-align: right; right:20px;  font-size:15px;  lighter" t-esc="auto_data['customer']" />
+                        </br>
+
+                        <br>
+                            <t style="position:absolute; margin-top: 150px; text-align: right; right:50px;  font-size:15px;  lighter" t-esc="auto_data[ 'address']" />
+                        </br>
+                    </div>
+
+                   
+               
+                <div class="table">
+                    <table class="table">
+                            <thead class="th">
+                                <tr>
+                                    <th>Color</th>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Discount %</th>
+                                    <th>Unit Price</th>
+                                    <th>wheels</th>
+                                    <th>trailer value</th>
+                                    <th>Total trailer price</th>
+                                </tr>
+                            </thead>
+                        <tbody class="table">
+                               
+                            <t t-foreach="data" t-as="prod">
+                                <tr class=".th,td">
+                                    <td><t t-esc="prod['color']" /></td>
+                                    <td><t t-esc="prod['description']" /></td>
+                                    <td><t t-esc="prod['qty']" /></td>
+                                    <td>$<t t-esc="prod['unit_price']" /></td>
+                                    <td><t t-esc="prod['disc']"/>%</td>
+                                    <td>$<t t-esc="prod['price_extra']" /></td>
+                                    <td><t t-esc="prod['wheels']"/></td>
+                                    <td>$<t t-esc="prod['ganancia']"/></td>
+                                    <td><t t-esc="prod['total']"/></td>
+                                </tr>  
+                            </t>
+                            <tr class=".th,td">
+                                <th style="border: 1px solid black;">Total Price</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>$<t t-esc="prod['total price']"/></td>
+                                <td></td>
+                            </tr>
+                             <tr class=".th,td">
+                                <th style="border: 1px solid black;">Freight</th>
+                                <td></td>
+                                <td></td>
+                                <td>$<t t-esc="prod['freight_price']"/></td>
+                                <td></td>
+                                <td>$<t t-esc="prod['freight_price']"/></td>
+                                <td></td>
+                                <td>$<t t-esc="prod['freight_price']"/></td>
+                                <td>$<t t-esc="prod['freight_price']"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                     <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+
+                    
+                </div>
+                <h2 style="position:center; left:200px; font-weight: bold;  font-size:15px; ">Signature:____________________________________________  Date:___________________________________________ </h2>
+                    <h2 style="position:center; left:150px;  font-size:15px;  font-weight: lighter;"> IF NOT CALLED $100.00 DLLS PENALTY WILL BE CHARGED TO TRUCKING COMPANY </h2>
+                    <h2 style="position:center; left:150px;  font-size:15px;  font-weight: lighter;"> SI NO SE LLAMA,SE COBRARA UNA MULTA DE $100.00 DLLS ALA EMPRESA DE CAMIONES </h2>
+                    <div style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/84/84045.png" alt="Logo" style="width: 50px; text-align:center; height: auto;" />
+                    </div>
+                    <br>
+                    </br>
+                    <h2 style="text-align:center; left:200px;  font-size:15px; text-decoration: underline; font-weight: lighter;">NOTE: TRUCKING COMPANY IS RESPONSIBLE FOR THE LOAD AS SOON AS IT LEAVES HORIZON PREMISES. ANY DAMAGES OR LOST PARTS. </h2>
+                    <h2 style="text-align:center; left:200px;  font-size:15px; text-decoration: underline; font-weight: lighter;">NOTA: LA COMPAÑIA TRANSPORTISTA ES RESPONSABLE DE LA CARGA EN CUANTO SALGA DE LAS INSTALACIONES DE HORIZON,POR CUALQUIER DAÑO O PARTES PERDIDAS.</h2>
+                    <h2 style="text-align:center; left:200px;  font-size:15px; font-weight: lighter;">NOTA: FAVOR DE ENVIAR LA FACTURA DEL FLETE Y PACKING SLIP FIRMADO POR EL DEALER AL SIGUIENTE CORREO: invoice.logistics@horizontrailers.com</h2>
+                    <br>
+                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">______________________________________</h2>
+                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;"> DRIVERS SIGNATURE </h2>
+                    </br>
+                    <br>
+                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">______________________________________ </h2>
+                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;"> DATE </h2>
+                    </br>
+                    <div style="text-align:center; left:300px;  font-size:15px; font-weight: bold;">
+                        <t  t-esc="auto_data['invoice_number']" />
+                    </div>
+
+                
+            </div> 
+        </t>
+    </template>
+</odoo>

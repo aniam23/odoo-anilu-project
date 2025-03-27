@@ -1,0 +1,341 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fnce_xml_upld
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0-20240605\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-18 22:08+0000\n"
+"PO-Revision-Date: 2024-07-18 22:08+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: fnce_xml_upld
+#: model:ir.ui.menu,name:fnce_xml_upld.menu_1
+msgid "Add XML"
+msgstr "Agregar XML"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__attachmentRef
+msgid "Attachment Reference"
+msgstr "Referencia Archivo"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__buttonVisibility
+msgid "Buttonvisibility"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CADENA ORIGINAL DEL COMPLEMENTO DE CERTIFICACIÓN DIGITAL DEL SAT:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CANT"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CFDI RELACIONADOS: <span style=\"color: black;\" id=\"relatedCfid\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CLAVE"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CLAVE PROD/SERV"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CLAVE UNIDAD"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "CONDICIONES DE PAGO: <span style=\"color: black;\" id=\"paymentCond\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "Comprobante Fiscal Digital"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.form
+msgid "Create Drafts"
+msgstr "Crear Borrador"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__create_uid
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__create_date
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__create_date
+msgid "Created on"
+msgstr "Creado"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__date
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__date
+msgid "Creation Date"
+msgstr "Fecha de Creacion"
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "DESCRIPCIÓN"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "DESCUENTO"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__description
+msgid "Description"
+msgstr "Descripcion"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__display_name
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__display_name
+msgid "Display Name"
+msgstr "Nombre Presentado"
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "FECHA Y HORA DE CERTIFICACION:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid ""
+"FECHA Y HORA DE EMOSION: <span style=\"color: black;\" "
+"id=\"emisionTimeAndDate\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "FOLIO FISCAL:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "FOLIO: <span style=\"color: black;\" id=\"folio\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "FORMA DE PAGO: <span style=\"color: black;\" id=\"paymentForm\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__id
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__id
+msgid "ID"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IEPS"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IMPORTE"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "ISR Retenido"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IVA 0%"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IVA 16%"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IVA 8%"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "IVA Retenido"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "Impuestos Locales Retenidos"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "Impuestos Locales Traslados"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__invoiceRef
+msgid "Invoice Reference"
+msgstr "Referencia de factura"
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "LUGAR DE EXPEDICIÓN: <span style=\"color: black;\" id=\"expeditionPlace\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld____last_update
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference____last_update
+msgid "Last Modified on"
+msgstr "Ultima Modificacion"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__write_uid
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__write_uid
+msgid "Last Updated by"
+msgstr "Ultima Actualizacion por"
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__write_date
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__write_date
+msgid "Last Updated on"
+msgstr "Ultima Actualizacion"
+
+#. module: fnce_xml_upld
+#: model:ir.ui.menu,name:fnce_xml_upld.regestry
+msgid "Log Regestry"
+msgstr "Registro"
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "METODO DE PAGO: <span style=\"color: black;\" id=\"paymentMethod\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid ""
+"MONEDA: <span style=\"color: black;\" id=\"currency\"/> TIPO DE CAMBIO: "
+"<span style=\"color: black;\" id=\"currencyChange\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "NUMERO DE SERIE DEL CERTIFICADO DEL EMISOR:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "NUMERO DE SERIE DEL CERTIFICADO SAT:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__name
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_log_reference__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "NumRegidTrib: <span style=\"color: black;\" id=\"NumRegidTrib\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "REGIMEN FISCAL"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "RESIDENCIA FISCAL: <span style=\"color: black;\" id=\"fiscalHome\"/>"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "SELLO DIGITAL DEL EMISOR:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "SELLO DIGITAL DEL SAT:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "SUBTOTAL"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "TOTAL"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "UNIDAD"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "USO CFDI:"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.model.fields,field_description:fnce_xml_upld.field_fnce_xml_upld_fnce_xml_upld__files
+msgid "Upload XML"
+msgstr "Importar XML"
+
+#. module: fnce_xml_upld
+#: model:ir.model,name:fnce_xml_upld.model_fnce_xml_upld_fnce_xml_upld
+msgid "Uploads xml files and creates invoice from the info in the xml files."
+msgstr "Importa XML y crea facturas con la informacion del archivo xml."
+
+#. module: fnce_xml_upld
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "VALOR UNITARIO"
+msgstr ""
+
+#. module: fnce_xml_upld
+#: model:ir.actions.act_window,name:fnce_xml_upld.action_window
+#: model:ir.ui.menu,name:fnce_xml_upld.xml
+msgid "XML"
+msgstr "XML"
+
+#. module: fnce_xml_upld
+#: model:ir.actions.act_window,name:fnce_xml_upld.log_reference_action_window
+msgid "XML Log"
+msgstr "Registro XML"
+
+#. module: fnce_xml_upld
+#: model:ir.actions.report,name:fnce_xml_upld.log_ref_report
+#: model_terms:ir.ui.view,arch_db:fnce_xml_upld.log_reference_report
+msgid "XML Report"
+msgstr "Reporte XML"
+
+#. module: fnce_xml_upld
+#: model:ir.ui.menu,name:fnce_xml_upld.menu_root
+msgid "XML Uploader"
+msgstr "Importador XML"
+
+#. module: fnce_xml_upld
+#: model:ir.model,name:fnce_xml_upld.model_fnce_xml_upld_log_reference
+msgid "fnce_xml_upld.log_reference"
+msgstr "fnce_xml_upld.log_reference"

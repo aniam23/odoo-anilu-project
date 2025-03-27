@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fnce_xml_upld_fnce_xml_upld,fnce_xml_upld.fnce_xml_upld,model_fnce_xml_upld_fnce_xml_upld,,1,1,1,1
+access_fnce_xml_upld_log_reference,fnce_xml_upld.log_reference,model_fnce_xml_upld_log_reference,,1,1,1,1

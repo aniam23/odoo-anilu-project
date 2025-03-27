@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_hs7_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                
+                    <h2 style=" position:center;  font-size:20px;"> NHTSA Declaration(if not included in invoice) </h2>
+                    <h2 style=" position:relative; text-align: left; left:250px;  font-size:20px;"> (49 CFR 591) </h2>
+                    <h2 style=" position:center;  font-size:20px;"> I certify that: </h2>
+                    <h2 style=" position:center;  font-size:20px;">1&#41; The products described in:</h2>
+
+                    <div style="position:relative; text-align:left; left:90px; font-size:20px;" >
+                        <t style="position:relative; text-align:left; left:90px; font-size:20px;">Invoice numbers: <t t-esc="auto_data['invoice_number1']" /></t>
+                    </div>
+                    <br>
+                        <h2 style="  position:relative; text-align: left; left:90px;  font-size:20px;"> comply with the requirements of box 2A of NHTSA Form HS-7, and; </h2>
+                    </br>
+
+                    <h2 style=" position:center; text-align: left; left:10px; font-size:20px;"> 2&#41; I certify that have copy of Form HS-7 on file signed with the following date: </h2>
+
+                   <div style="  position:relative; text-align: left; left:100px;  font-size:20px;">
+                    <t style="position:relative; text-align:left; left:40px; font-size:20px;">Date: <t t-esc="auto_data['date2']"  /></t>
+                   </div>
+
+                    <h2 style=" position:center;  font-size:20px;" > I understand that the information on the NHTSA HS-7 Declaration form is required by 49 U.S.C Chapters 301,325, and 331 and that failure to provide the required information will result in the refusal of entry of the vehicle(s) or equipment into the Unites States. I certify that the declaration I have made and the information  I have provided are correct, and that all required attachments are appended to this form. I am aware that any person knowingly making a false declaration on the NHTSA HS-7 Declaration form is subject to a fine of not more than $10,000 or imprisonment for not more than 5 years or both under 18 U.S.C. 1001. </h2>
+                    
+                    <div style=" font-size:20px;">
+                        <t  style=" position:center;  font-size:20px;"> Certifield  by HORIZON TRAILERS MEXICO S. DE R.L. DE  C.V.  Date:  <t t-esc="auto_data['date2']" /></t>
+                    </div>
+
+                <div style="text-align: center;">
+                    <img src="https://tudominio.odoo.com/web/image/ir.attachment/ID_DE_LA_IMAGEN/image" 
+                    alt="Logo" 
+                    style="width: 200px; height: auto;" />
+                </div>
+
+
+            </div> 
+        </t>
+    </template>
+</odoo>

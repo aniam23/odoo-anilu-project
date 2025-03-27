@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="vin_reference_sequence" model="ir.sequence">
+      <field name="name">VIN Reference Sequence</field>
+      <field name="code">vin.reference</field>     
+      <field name="prefix">VIN/</field>
+    </record>
+
+    <record id="vin_generator_count_sequence" model="ir.sequence">
+      <field name="name">VIN actual count</field>
+      <field name="code">vin.count</field>  <!-- Apply the same you applied above-->
+      <field name="number_next_actual">5000</field> <!-- optional, if you not add this field by default 1 will be starting no. -->
+      <field name="implementation">no_gap</field>
+    </record>
+
+    <record model="ir.ui.view" id="vin_generator.form">
+      <field name="name">VIN Generator</field>
+      <field name="model">vin_generator.vin_generator</field>
+      <field name="arch" type="xml">
+        <form create="false">
+           <sheet>
+            <group>
+              <field name="vin_count" readonly='1'/>
+              <field name="tongue_type" attrs="{'readonly': [('vin', '!=', False)]}"/>
+              <field name="trailer_type" attrs="{'readonly': [('vin', '!=', False)]}"/>
+              <field name="trailer_length" attrs="{'readonly': [('vin', '!=', False)]}"/>
+              <field name="number_of_axles" attrs="{'readonly': [('vin', '!=', False)]}"/>
+              <field name="year_of_trailer" attrs="{'readonly': [('vin', '!=', False)]}"/>
+              <field name="vin" readonly="1"/>
+              <button name="generate_vin" string="Calculate VIN" type="object" attrs="{'invisible': [('vin', '!=', False)]}"/>   
+            </group>
+          </sheet>
+        </form>
+      </field>  
+    </record> 
+    <record model="ir.ui.view" id="vin_generator.list">
+      <field name="name">VIN Regestry</field>
+      <field name="model">vin_generator.vin_generator</field>
+      <field name="arch" type="xml">
+        <tree create="false">
+          <field name="name" readonly="1"/>
+          <field name="vin" readonly="1"/>
+          <field name="production_order_relation" readonly="1"/>
+        </tree>
+      </field>  
+    </record> 
+
+    <record model="ir.actions.act_window" id="vin_generator.action_window">
+      <field name="name">VIN</field>
+      <field name="res_model">vin_generator.vin_generator</field>
+      <field name="view_mode">form</field>
+      <field name="target">current</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="vin_generator.action_window_tree">
+      <field name="name">VIN</field>
+      <field name="res_model">vin_generator.vin_generator</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="VIN Generator" id="vin_generator.menu_root" web_icon="vin_generator,static/description/icon.png"/>
+    
+    <menuitem name="VIN" id="vin_generator.vin" parent="vin_generator.menu_root"/>
+
+    <!-- <menuitem name="Add VIN" id="vin_generator.menu_1" parent="vin_generator.vin"
+          action="vin_generator.action_window"/> -->
+    <menuitem name="VIN Regestry" id="vin_generator.menu_1" parent="vin_generator.vin"
+          action="vin_generator.action_window_tree"/>
+  </data>
+</odoo>

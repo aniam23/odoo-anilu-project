@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="report_HS7_action" model="ir.actions.report">
+        <field name="name">PRINT REPORT HS7</field>
+        <field name="model">logistics.log_document</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">logistics_document_packages.report_hs7_template</field>
+        <field name="report_file">logistics_document_packages.report_hs7_template</field>
+    </record>
+  </odoo>
+  

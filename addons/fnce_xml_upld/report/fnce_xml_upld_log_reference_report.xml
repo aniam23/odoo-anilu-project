@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="log_ref_report" model="ir.actions.report">
+         <field name="name">XML Report</field>
+         <field name="model">fnce_xml_upld.log_reference</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">fnce_xml_upld.log_reference_report</field>
+         <field name="report_file">fnce_xml_upld.log_reference_report</field>
+   </record>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="invoice_title_generator_wizard">
+        <field name="name">shipping.weight.wizard.form</field>
+        <field name="model">shipping.weight.wizard</field>
+        <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="weight" string="Shipping Weight(KG)"/>
+                    </group>
+                    <footer>
+                        <button name="set_data" string="Accept" type="object"/>
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+        </field>    
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="title_print_template">
+            <t t-call="web.html_container">
+                <t t-foreach="full_data" t-as="info">
+                <div class="page">
+                    <div>
+                        <style type="text/css" media="all">
+                            .page{
+                             margin:20,20,20,20;
+                             }
+                             .imagestyle{
+                                text-align: center;
+                                margin-top:-200px;
+                                width: 30px;
+                                height: auto;
+                             }
+                             .custom_date_style {
+                             color: black;
+                             font-size: 10px;
+                             text-align: left;
+                             margin-top: 20px;
+                             margin-left: 90px;
+                             font-family: Arial, sans-serif;
+                             }
+                             .titulo-estilo {
+                             color: #000000;
+                             font-size: 10px;
+                             margin-top:210px;
+                             text-align: right; 
+                             margin-right: 70px;
+                             font-weight: lighter;
+                             font-family: Arial, sans-serif;
+                             }
+                             .titulo-fijo {
+                             color: #000000;
+                             font-size: 10px;
+                             margin-top:200px;
+                             text-align: right; 
+                             margin-right: 130px;
+                             font-weight: lighter;
+                             font-family: Arial, sans-serif;
+                             }
+                             .make {
+                             color: #000000;
+                             font-size: 10px;
+                             text-align: right; 
+                             margin-right: 50px;
+                             font-weight: lighter;
+                             font-family: Arial, sans-serif;
+                             }
+                             .titulo_info {
+                             color: #000000;
+                             font-size: 10px;
+                             font-weight: lighter;
+                             margin-left: 120px;
+                             font-family: Arial, sans-serif;
+                             }
+                             .titulo_fin {
+                             color: #000000;
+                             font-size: 10px;
+                             text-align: right; 
+                             margin-right: 100px;
+                             font-weight: lighter;
+                             margin-top: 80px;
+                             font-family: Arial, sans-serif;
+                                                }
+                        </style>
+                        <div style=" position:relative; left:150px;" >
+                            <img src="https://www.horizontrailers.com/web/image/642-9ccecb60/logos%202023%20vector%20curvas%20FINAL-02.png" alt="Logo" style="width: 200px; height: auto;  " />
+                        </div>
+                                <div style=" position:absolute; right: 320px;  font-size: 10px; font-family: Arial, sans-serif; font-weight: lighter; top: 50px; ">
+                                    <p>
+                                        <t t-esc="info['year']" />
+                                    </p>   
+                                </div>
+
+                        <div style="text-align: right; margin-right: 80px; font-size: 10px; font-family: Arial, sans-serif; top: 30px;">
+                            <p>
+                                <t t-esc="info['invoice_number']" />
+                            </p>
+                            <h2  class="make">Horizon Trailers LLC </h2>
+                            <h2 style="text-align: right; margin-right: 5px; font-weight: lighter;  margin-top: 30px; font-size: 10px; font-family: Arial, sans-serif; "> <t t-esc="info['shipping_weight']" /> </h2>
+                           
+                        </div>
+
+                                <div style="text-align: right; margin-right: 150px; font-weight: lighter; font-size: 10px; top:500px; font-family: Arial, sans-serif;">
+                                    <p>
+                                        <t t-esc="info['model_name']" />
+                                    </p>
+                                </div>
+
+                            <div style="text-align: left;  margin-top:-115px; margin-left: 60px; font-size: 10px; font-family: Arial, sans-serif; ">
+                                <p>
+                                    <t t-esc="info['date']" />
+                                </p>
+                                <p>
+                                    <t t-esc="info['vin']" />
+                                </p>
+                                <div style="text-align: left;  margin-top:30px;">
+                                    <p>
+                                        <t t-esc="info['body_type']"/>
+                                    </p>
+                                </div>
+                            </div>
+                        
+                            <div style="text-align: left;  margin-top:30px; margin-left: 115px; font-size: 10px;  font-weight: lighter; font-family: Arial, sans-serif; ">
+                                 <p>
+                                    <t t-esc="info['gvwr']" />
+                                </p>
+                            </div>
+                    </div>
+                    <div style="clear: both; margin-top: 20%;">
+                        <h2 class="titulo_info">HBS TRAILERS SALES</h2>
+                        <h2 class="titulo_info">1903 S. Irby St.</h2>
+                        <h2 class="titulo_info">FLORENCE, SOUTH CAROLINA 29505</h2>
+
+                        <h2 class="titulo_fin">Horizon Trailers Mexico S de RL de CV</h2>
+                        <div style="text-align: right; margin-right: 80px;  margin-top: 20px;">
+                            <img src="https://azaharaletras.com/wp-content/uploads/2023/03/firma-m-gonzalez-4.jpg.webp" alt="Logo" style="width:100px; height:auto; text-align: right; margin-right: 90px;"/>
+                        </div>
+                        <h2 style="text-align: right; margin-right: 170px; margin-top: 25px;" class="titulo-fijo" >Riva Palacio-Chihuahua</h2>
+                    </div>
+                </div>
+                <t t-if="info['last_data'] != True">
+                    <div style="page-break-after:always;"/>
+                </t>
+                </t>
+           </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="report_decla_action" model="ir.actions.report">
+        <field name="name">Declaration</field>
+        <field name="model">logistics.log_document</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">logistics_document_packages.report_decla_template</field>
+        <field name="report_file">logistics_document_packages.report_decla_template</field>
+    </record>
+  </odoo>

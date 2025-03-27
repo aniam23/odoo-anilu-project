@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="fnce_xml_upld_form">
+      <field name="name">fnce_xml_upld.form</field>
+      <field name="model">fnce_xml_upld.fnce_xml_upld</field>
+      <field name="arch" type="xml">
+        <form create="false">
+           <sheet>
+            <group>
+              <field name="buttonVisibility" invisible="1"/>
+              <field name="description" readonly="1"/>
+              <field name="files" widget="many2many_binary"/>
+              <button name="use_files" string="Create Drafts" type="object" attrs="{'invisible':[('buttonVisibility','==',True)]}"/>            
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>  
+
+    <!-- <record model="ir.ui.view" id="fnce_xml_upld_otherFORM">
+      <field name="name">other form</field>
+      <field name="model">fnce_xml_upld.fnce_xml_upld</field>
+      <field name="arch" type="xml">
+        <form create="false">
+           <sheet>
+            <group>
+              <field name="buttonVisibility" invisible="1"/>
+              <field name="description" readonly="1"/>
+              <field name="files" widget="many2many_binary"/>
+              <button name="use_files" string="Create Drafts" type="object" attrs="{'invisible':[('buttonVisibility','==',True)]}"/>            
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>   -->
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="fnce_xml_upld_action_window">
+      <field name="name">XML</field>
+      <field name="res_model">fnce_xml_upld.fnce_xml_upld</field>
+      <field name="view_mode">form</field>
+      <field name="target">current</field>
+    </record>
+    
+
+    <!-- Top menu item -->
+    
+    <menuitem name="XML Uploader" id="fnce_xml_upld_menu_root" web_icon="fnce_xml_upld,static/description/icon.png"/>
+
+    <menuitem name="XML" id="fnce_xml_upld_xml" parent="fnce_xml_upld_menu_root"/>
+
+    <menuitem name="Add XML" id="fnce_xml_upld_menu_1" parent="fnce_xml_upld_xml"
+    action="fnce_xml_upld_action_window"/>
+    <!-- <menuitem name="Test" id="fnce_xml_upld.test" parent="fnce_xml_upld.xml"
+    action="view_book"/> -->
+
+  </data>
+</odoo>

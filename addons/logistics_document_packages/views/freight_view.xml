@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="freight_form">
+            <field name="name">freight</field>
+            <field name="model">freight.partner</field>
+            <field name="arch" type="xml">
+              <form>
+                 <sheet>
+                  <group>
+                    <field name="name">freight</field>
+                    <field name="ref_cliente"/>
+                    <field name="freight_prices"/>
+                  </group>
+                </sheet>
+              </form>
+            </field>  
+        </record> 
+        <record model="ir.ui.view" id="freight_list">
+          <field name="name">freight list</field>
+          <field name="model">freight.partner</field>
+          <field name="arch" type="xml">
+            <tree create="false">
+                <field name="name"></field>
+                <field name="ref_cliente"/>
+                <field name="freight_prices"/>
+            </tree>
+          </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="freight_form_action_window">
+            <field name="name">FREIGHT</field>
+            <field name="res_model">freight.partner</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="frieght_log_action_window">
+          <field name="name">FREIGHT LOG</field>
+          <field name="res_model">freight.partner</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Freight Options" id="options_freight" parent="logistics_document_packages_menu_root"/>
+
+        <menuitem name="Add freight" id="new_freight" parent="options_freight" action="freight_form_action_window"/>
+
+        <menuitem name="freight registry" id="freight_registry" parent="options_freight" action="frieght_log_action_window"/>
+    </data>
+</odoo>

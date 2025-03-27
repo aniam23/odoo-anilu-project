@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_decla_template">
+        <t t-call="web.html_container">
+            <div class="page">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%; 
+                    }
+                    .filas {
+                        border: 1px solid #000;
+                        border-spacing: 0; 
+                        padding: 10px;
+                        width: 25%;
+                        text-align: left; 
+                    }
+                    
+                </style>
+                <div style="flex: 1; text-align: center; display: flex; flex-direction: column; margin-top:20px;, justify-content: center;">
+                    <h2 style="font-weight: bold; font-family: Times New Roman; font-size: 17px;">- DECLARATION -</h2>
+                    <h2 style="font-weight: lighter; font-family: Times New Roman; font-size: 12px;">Importation of Motor Vehicles and Motor Vehicle Equipment Subject to</h2>
+                    <h2 style="font-weight: bold; font-family: Times New Roman; font-size: 12px;">Federal Motor Vehicle Safety, Bumper and Theft Prevention Standards</h2>
+                </div>
+                <div>
+                    <div style="flex: 1; text-align: left; display: flex; margin-top: -60px; flex-direction: column; justify-content: center;">
+                        <h2 style="font-weight: lighter; font-family: Arial; font-size: 6px; margin-top: 10px;">US Department</h2>
+                        <h2 style="font-weight: lighter; font-size: 6px; font-family: Arial; margin-top: 10px;">of Transportation</h2>
+                        <h2 style="font-weight: bold; font-size: 6px; font-family: Arial; margin-top: 10px;">National Highway</h2>
+                        <h2 style="font-weight: bold; font-size: 6px; font-family: Arial; margin-top: 10px;">Traffic Safety</h2>
+                        <h2 style="font-weight: bold; font-size: 6px; font-family: Arial; margin-top: 10px;">Administration</h2>
+                    </div>
+
+                    <div style="flex: 1; text-align: right; margin-top:-80px; display: flex; flex-direction: column; justify-content: center;">
+                        <h2 style="font-weight: lighter; font-size: 7px; font-family: Arial; margin-top: 10px;">OMB No. 2127-0002</h2>
+                        <h2 style="font-weight: lighter; font-size: 7px; font-family: Arial; margin-top: 10px;">Public Law 100-562</h2>
+                        <h2 style="font-weight: lighter; font-size: 7px; font-family: Arial; margin-top: 10px;">49 USC Chap. 301</h2>
+                    </div>
+                </div>
+                <br>
+                </br>
+                <br>
+                </br>
+                <div class="table">
+                    <table border="1" class="table">
+                        <thead class="filas">
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px;">
+                                <td>PORT OF ENTRY SANTA TERESA</td>
+                                <td>CUSTOMS PORT CODE 2408</td>
+                                <td>CUSTOMS ENTRY NO</td>
+                                <td>ENTRY DATE:<span t-esc="auto_data['date2']" /></td>
+                            </tr>
+                        </thead>
+                        <tbody class="filas" >
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px; ">
+                                <td>MAKE OF VEHICLE: HORIZON TRAILERS MEXICO S. DE R.L. DE C.V.</td>
+                                <td>MODEL: <span t-esc="auto_data['trailers_hs7']" /></td>
+                                <td>YEAR: 2025</td>
+                                <td>VEHICLE IDENTIFICATION NUM (VIN): <span t-esc="data['vin']"/></td>
+                            </tr>
+                        </tbody>
+                        <tbody class="filas" >
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px; ">
+                                <td>REGISTERED IMPORTER NAME AND NHTSA REGISTRATION NUMBER (Required when Box 3 is checked): HORIZON TRAILERS MEXICO S. DE R.L. DE C.V.</td>
+                                <td>VEHICLE ELIGIBILITY NO. (Box 3): </td>
+                                <td>DESCRIPTION OF MERCHANDISE IF MOTOR VEHICLE EQUIPMENT:</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="display: flex;  font-family: Arial; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 300px; font-family: Arial; margin-top: 10px;">
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">Attachment: Copy of Official Orders.</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">XX7. The vehicle or equipment does not conform to all applicable Federal Motor Vehicle Safety</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">and Bumper Standards, but is being imported solely for the purpose of research, investigations,</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">demonstrations or training, or competitive racing events, and I state that I will comply with the</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">applicable restrictions on importers of such merchandise as specified in 49 CFR 591.7 and I will</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">provide the Administrator with documentary proof of export or destruction not later than 30 days</h2>
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">following the end of the period for which the vehicle has been admitted into the United States.</h2>
+                        <h2 style="text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">[591.5(j)]</h2>
+                    </div>
+                    <div style="flex: 2;  margin-top:0px; text-align: right;  font-family: Arial; min-width: 300px;">
+                        <h2 style="text-align: justify; text-align: right; right: 50px; font-weight: lighter; font-size: 7px; margin-bottom: 0; margin-top: 0px;">Attachment:</h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0;  margin-top:0px;">a.Copy of NHTSA permission letter if the importer is not an original manufacturer of motor vehicles</h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">(or a wholly owned subsidiary thereof) that are certified to conform to all applicable Federal Motor</h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">Vehicle Safety Standards (FMVSS). Use on the public roads must be authorized specifically.</h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">[591.6(f )(1) or (2)];</h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">b.	Importer's statement describing the use to be made of the vehicle or equipment item if the importer </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">is an original manufacturer of motor vehicles (or a wholly owned subsidiary thereof) that are </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">certified to conform to all applicable FMVSS. If use on the public roads is an integral part of the </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">purpose for which the vehicle or equipment item is imported, the statement shall describe the </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">purpose that makes such use necessary, state the estimated period of time during which use of </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">the vehicle or equipment item on the public roads is necessary, and state the intended means of </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">final disposition (and disposition date) of the vehicle or equipment item after completion of the </h2>
+                        <h2 style=" text-align: relative; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:0px;">purpose for which it is imported. [591.6(f)(3)]</h2>
+                    </div>
+                </div>
+                <div style=" position: absolute;  font-family: Arial; margin-top:30px;">
+                    <h2 style= "text-align: justify; position: absolute; text-align: absolute; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:-165px;"> XX1. The vehicle is 25 or more years old or the equipment item was manufactured on </h2>
+                    <h2 style="ttext-align: justify; ext-align: absolute; font-weight: lighter; font-size:7px; margin-bottom:0; margin-top:-160px;"> a date when no applicable Federal Motor Vehicle Safety Standard or Theft Prevention Standard </h2>
+                    <h2 style="text-align: justify; text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;; margin-top:10px;">was in effect. Date of manufacture: ____________________[591.5(i)]</h2>
+                    <br>
+                    </br>
+                    <h2 style="text-align: justify; text-align: relative; font-weight: lighter; font-size:7px;line-height: 5%; margin-bottom:0; margin-top:10px;">XX2A. The vehicle or equipment item conforms to all applicable Federal Motor Vehicle Safety  </h2>
+                    <h2 style="text-align: justify; text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;">Standards (or the vehicle does not conform solely because readily attachable  equipment</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;">items that will be attached to it before it is offered for sale to the first purchaser </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;">for purposes other than resale are not attached) and Bumper and Theft Prevention </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;">Standards, and bears a certification label or tag to that effect permanently affixed</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;"> by the original manufacturer to the vehicle or affixed by the manufacturer to the: </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-bottom:0; margin-top:10px;">equipment item or to its delivery container in accordance with applicable National </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 3%; margin-bottom:0; margin-top:10px;"> Highway  Traffic Safety Administration (NHTSA) regulations [591.5(b)];</h2>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;">XX2B. The vehicle was certified by its original manufacturer as conforming to all applicable </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;">Canadian motor vehicle safety standards and its original manufacturer confirms that the </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;">vehicle conforms to all applicable U.S. Federal Motor Vehicle Safety,Bumper, and Theft</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;">Prevention Standards (or that it conforms to all such standards except for the labeling </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;"> requirements of Standards Nos. 101 and 110 or 120, and/or the specifications of Standard </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;"> No. 108 relating to daytime running lamps), and the vehicle is not a salvage motor vehicle, </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 8%; margin-top:10px;"> a repaired salvage motor vehicle, or a reconstructed motor vehicle, and I am importing it   </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;   margin-top:0px;">for personal use. [591.5(g)]; Attachment: Copy of manufacturer's confirmation letter.  </h2>
+                </div>
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+                <div style="flex: 1;  font-family: Arial; min-width: 100px;">
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">XX3.The vehicle does not conform to all applicable Federal Motor Vehicle Safety and Bumper  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">Standards, but does conform to applicable Federal Theft Prevention Standards, but I am  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">eligible to import it because NHTSA has determined that the model and model year of the vehicle  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">to be imported is eligible for importation into the United States, and the vehicle is not a salvage </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">motor vehicle or a reconstructed motor vehicle, and I have furnished a bond, which is attached to  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">this declaration, in an amount equal to 150 percent of the entered value of the vehicle as determined  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">by the Secretary of the Treasury.If the Administrator of NHTSA determines that the vehicle has not </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">been brought into conformity with all such standards within 120 days after importation, then I state </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">that I will deliver such vehicle to the Secretary of Homeland Security for export, or abandon it to </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">the United States [591.8]; and that</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">a. I have registered with NHTSA pursuant to 49 CFR Part 592 and such registration is not suspended</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">and has not been revoked; or</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">b. I have executed a contract or other agreement, which is attached to this declaration,</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;"> with an importer who has registered with NHTSA and whose registration is not suspended </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">and has not been revoked. [591.5(f)]</h2>
+                    <h2 style="text-align: justify;text-align: relative;   font-weight: lighter; font-size:7px;  margin-top:10px;">Attachments: Copy of DOT Bond; and Copy of Contract with a Registered Importer, if applicable.</h2> 
+            
+                </div>
+               
+                <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: ABSOLUTE; margin-top:-280px; ">
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:15px;">XX8. The vehicle was not manufactured primarily for use on the public roads and thus is not a motor </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:15px;">vehicle subject to the Federal Motor Vehicle Safety, Bumper, and Theft Prevention Standards </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:15px;">or the equipment item is not a system, part, or component of a motor vehicle and thus is not an  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:15px;">item of motor vehicle equipment subject to the Federal Motor Vehicle Safety Standards. [591.5(a)]</h2>
+                    <h2 style="text-align: right; right:30px; font-weight: lighter; font-size:7px; ; line-height: 5%; margin-top:15px;">Attachment: Importer’s statement substantiating that the vehicle was not manufactured for use on </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:15px;">the public roads, or that the equipment item was not manufactured for use on a motor vehicle or </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:15px;">is not an item of motor vehicle equipment. [591.6(a)]</h2>
+                </div>
+                <br>
+                </br>
+                <br>
+                </br>
+                 <br>
+                </br>
+                <br>
+                </br>
+                <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:110px;">
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 4%; margin-top:20px;">XX4. The vehicle or equipment does not conform to all applicable Federal Motor Vehicle Safety,  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 4%; margin-top:20px;">Bumper and Theft Prevention Standards, but is intended solely for export and is labeled for</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 4%; margin-top:20px;">export on the vehicle or equipment item, and the outside of any container of the vehicle or </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 4%; margin-top:20px;">equipment item bears a label or tag to that effect. [591.5(c)]</h2>
+                </div>
+                
+                <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:60px;">     
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px;font-size:7px;line-height: 5%;  ">XX10. The vehicle does not conform to all applicable Federal Motor Vehicle Safety and Bumper Standards</h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px;font-size:7px;line-height: 5%; "> but is being imported solely for the purpose of show and display, and I state that I will comply </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px;font-size:7px;line-height: 5%; "> with all applicable restrictions on importers of such vehicles as specified in 49 CFR 591.7. [591.5(j)]. </h2>
+                    <h2 style="text-align: right; right:20px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">Attachment: Copy of NHTSA Permission Letter.</h2>
+                </div>
+                
+                <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:-300px;">
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">XX9. The vehicle or equipment item requires further manufacturing operations to perform its intended </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">function, other that the addition of readily attachable equipment items such as mirrors, wipers, </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">or tire and rim assemblies, or minor finishing operations such as painting, and any part of such  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">vehicle that is required to be marked by the Theft Prevention Standard is marked in accordance</h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">with that standard. [591.5(e)] </h2>
+                    <h2 style="text-align: justify;text-align: right;  right:20px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">Attachment: For a vehicle, a copy of the Incomplete Vehicle Document, issued by the incomplete </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">vehicle manufacturer, providing guidance on completing the vehicle so that it conforms to all </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">applicable Federal Motor Vehicle Safety Standards (FMVSS). For an equipment item, a statement </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">issued by the item’s manufacturer identifying the applicable FMVSS to which the item does not </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">conform and describing the further manufacturing required for the item to perform its intended </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:20px;">function. [591.6(b)].</h2>
+                </div>
+                <div style="flex: 1;  font-family: Arial; min-width: 600px; ">
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%;  margin-top:10px;">XX5. The vehicle or equipment does not conform to all applicable Federal Motor Vehicle Safety, </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%;  margin-top:11px;">Bumper and Theft Prevention Standards, but I am eligible to import it because all of the  </h2>
+                     <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:12px;">following conditions exist:</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">a. I am a nonresident of the United States and the vehicle is registered in a country other than </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">the United States;</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">b. I am temporarily importing the vehicle for personal use for a period not to exceed 1 year, </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">and will not sell it during that time; and</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">c. I will export it not later than the end of 1 year after entry, and the declaration contains my passport</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;  margin-top:10px;">number and country of issue. [591.5(d)]</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%;   margin-top:10px;">d. Passport No. ___________________ Country of Issue ___________________</h2>
+                </div>
+                <br>
+                </br>
+                <br>
+                </br>
+                <div style="flex: 1;  font-family: Arial; min-width: 300px;">
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">XX6. The vehicle does not conform to all applicable Federal Motor Vehicle Safety, Bumper, </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">and Theft Prevention Standards, but I am eligible to import it because all of the  </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px; line-height: 5%; margin-top:10px;">following conditions exist:</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">a. I am a member of a foreign government on assignment in the United States, or a member of the </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">Secretariat of a public international organization so designated under the International Organizations </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">Immunities Act, and within the class of persons for whom free entry of motor vehicles has</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">been authorized by the Department of State;</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">b. I am importing the vehicle on a temporary basis for my personal use, and will register it through</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">the Office of Foreign Missions of the Department of State;</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">c. I will not sell the vehicle to any person in the United States, other than a person eligible to import </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">a vehicle under this paragraph;</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">d. I will obtain from the Office of Foreign Missions of the State Department, before departing the</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;"> United States at the conclusion of a tour of duty, an ownership title to the vehicle good for export </h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">only; and</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">e. I have attached a copy of my official orders. [591.5(h) 1</h2>
+                    <h2 style="text-align: justify;text-align: relative; font-weight: lighter; font-size:7px;  line-height: 5%; margin-top:10px;">Name of Embassy: _______________________________________________</h2>
+                    
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:-330px;">
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">XX11.	The equipment item is subject to the Theft Prevention Standard and is marked in accordance with </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">the requirements of 49 CFR Part 541.  [591.5(k)] </h2>
+                    </div>
+                    <br>
+                    </br>
+                    <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:20px;">
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">XX12.	The vehicle does not conform to all applicable Federal Motor Vehicle Safety, Bumper, and Theft </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">Prevention Standards, but I am eligible to import it because all of the following conditions exist:</h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">a.	I am a member of the armed forces of a foreign country on assignment in the United States;  </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">b.	I am importing the vehicle on a temporary basis, and for my personal use; </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">c.	I will not sell the vehicle to any person in the United States, other than a person eligible to import </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">a vehicle under this paragraph; </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%; ">d.	I will export the vehicle upon departing the United States at the conclusion of my tour of duty; and </h2>
+                        <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%;">e.	I have attached a copy of my official orders. [591.5(h)(2)]  Attachment: Copy of Official Orders. </h2>
+                    </div>
+                </div>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    <br>
+                    </br>
+                    
+                <div style="flex: 1; min-width: 300px;  font-family: Arial; text-align: relative; margin-top:-280px;">
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px;  font-size:7px; line-height: 5%; ">XX13.The vehicle does not conform to all applicable Federal Motor Vehicle Safety and Bumper  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">Standards, but does conform to applicable Federal Theft Prevention Standards, and I am eligible </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">to import it because I am registered with NHTSA pursuant to 49 CFR Part 592 and such registration </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">is not suspended and has not been revoked, I have informed NHTSA that I intend to petition, </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; "> or I have petitioned, that agency to decide that the vehicle to be imported is eligible for  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">importation, and NHTSA has granted me permission in writing to import the vehicle for that purpose.  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">If the Administrator of NHTSA dismisses my petition, or decides that the vehicle is not eligible  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">for importation, or if I withdraw my petition or I fail to submit a petition covering the vehicle</h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; "> within 180 days from the date of entry, then I state that I will deliver such vehicle, unless it  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">is destroyed, to the Secretary of Homeland Security for export, or abandon it to the United States, </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; "> within 30 days from the date of the dismissal, denial, or withdrawal of my petition, as appropriate, </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">or within 210 days from the date of entry if I fail  to submit a petition covering the vehicle.   </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">If the Administrator of NHTSA grants my petition, then I state that within 15 days from the date </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">that I am notified of that decision, I will furnish a bond, in an  amount equal to 150 percent of   </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">the entered value of the vehicle as determined by the Secretary of the Treasury, unless the vehicle  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">is destroyed, to ensure that I will bring the vehicle into conformity with all applicable Federal Motor  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">Vehicle Safety and Bumper standards within 120 days from the date the petition is granted,   </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">or will deliver the vehicle to the Secretary of Homeland Security for export, or abandon it to the  </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%; ">United States. If the vehicle is destroyed, then I state that I will furnish NHTSA with documentary    </h2>
+                    <h2 style="text-align: justify;text-align: right; right:30px; font-weight: lighter; margin-top:10px; font-size:7px; line-height: 5%;">proof of that destruction within 15 days from the date that it occurs.</h2>
+                    <h2 style="text-align: right; right:30px; font-weight: lighter; font-size:7px; margin-top:10px; line-height: 5%;">Attachment: Copy of NHTSA permission letter. </h2>
+                </div>
+                
+                <div>
+                  <h2 style="text-align: right; right:30px; font-weight: lighter; font-size:7px; ">EPA Requirements: Importers of motor vehicles/engines and nonroad vehicles/engines/equipment must also submit EPA form 3520-1 or 3520-21 to U.S. Customs and Border Protection to identify the basis for importation into the United States and U.S. territories under the laws administered by the United States Environmental Protection Agency.  For more information, please see www.epa.gov/otaq/imports/index.htm.  </h2>
+                </div>
+               
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+                <br>
+                </br>
+              
+                <div class="table">
+                    <table border="1" class="table">
+                        <tbody class="filas" >
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px; ">
+                                <td>NAME OF IMPORTER (Please type)HORIZON TRAILERS MEXICO S. DE R.L. DE C.V. </td>
+                                <td>IMPORTER'S ADDRESS (Street, City, State, Zip Code) CARR. ESTATAL DE RUBIO A OJO DE LA YEGUA KILOMETRO 37.8 No.473 CAMPO 64-B SAN ANDRES RIVA PALACI, CHIH.C.P. 31646</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="filas" >
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px; ">
+                                <td>NAME OF DECLARANT (Please type)HORIZON TRAILERS MEXICO S. DE R.L. DE C.V.</td>
+                                <td>DECLARANT'S ADDRESS CARR. ESTATAL DE RUBIO A OJO DE LA YEGUA KILOMETRO 37.8 No.473 CAMPO 64-B SAN ANDRES RIVA PALACI, CHIH.C.P. 31646</td>
+                            </tr>
+                        </tbody>
+                        <tbody class="filas" >
+                            <tr style=" font-weight: lighter;  font-family: Arial; font-size:7px; ">
+                                <td>DECLARANT'S CAPACITY PRESIDENT</td>
+                                <td>DECLARANT'S SIGNATURE</td>
+                                <td>DATE SIGNED: <span t-esc="auto_data['date2']"  /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <tr style=" font-weight: lighter; text-align:left;  font-family: Arial; font-size:4px; margin-top: 100px;">
+                            <td>HS-7 (Rev. 05-2006)</td>
+                        </tr>
+                    </div>
+                    <div>
+                        <tr style=" font-weight: lighter;  font-family: Arial; text-align:right; font-size:4px;">
+                            <td>75124-M34d</td>
+                        </tr>
+                    </div>
+                </div> 
+            </div> 
+        </t> 
+    </template>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wheel_nut_form">
+            <field name="name">wheel_nut</field>
+            <field name="model">wheel.nut</field>
+            <field name="arch" type="xml">
+              <form>
+                 <sheet>
+                  <group>
+                    <field name="name">wheel_nut</field>
+                    <field name="ref_product"/>
+                    <field name="number_wheel_nut"/>
+                  </group>
+                </sheet>
+              </form>
+            </field>  
+        </record> 
+        <record model="ir.ui.view" id="wheel_nut_list">
+          <field name="name">wheel_nut list</field>
+          <field name="model">wheel.nut</field>
+          <field name="arch" type="xml">
+            <tree create="false">
+                <field name="name"></field>
+                <field name="ref_product"/>
+                <field name="number_wheel_nut"/>
+            </tree>
+          </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="wheel_nut_form_action_window">
+            <field name="name">wheel_nut</field>
+            <field name="res_model">wheel.nut</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="wheel_nut_log_action_window">
+          <field name="name">wheel_nut registry</field>
+          <field name="res_model">wheel.nut</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem name="Wheel nut Options" id="options_whell_nut" parent="logistics_document_packages_menu_root"/>
+
+        <menuitem name="Add wheel nut" id="new_wheel_nut" parent="options_whell_nut" action="wheel_nut_form_action_window"/>
+
+        <menuitem name="wheel nut registry" id="wheel_nut_registry" parent="options_whell_nut" action="wheel_nut_log_action_window"/>
+    </data>
+</odoo>

@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+       <record id="object0" model="logistics_document_packages_.logistics_document_packages"> 
+         <field name="name">Object 0</field> 
+       </record>
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vin_generator_vin_generator,vin_generator.vin_generator,model_vin_generator_vin_generator,,1,1,1,1
+access_vin_generator_gvwr_manager,vin_generator.gvwr_manager,model_vin_generator_gvwr_manager,,1,1,1,1
+access_shipping_weight_wizard,shipping_weight_wizard,model_shipping_weight_wizard,,1,1,1,1

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="title_print" model="ir.actions.report">
+         <field name="name">Title</field>
+         <field name="model">account.move</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">vin_generator.title_print_template</field>
+         <field name="report_file">vin_generator.title_print_template</field>
+
+   </record>
+</odoo>

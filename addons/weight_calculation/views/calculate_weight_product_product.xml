@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="calculated_weight_product_product_form">
+            <field name="name">product.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+		        <xpath expr="//field[@name='taxes_id']" position="after">
+                    <field name="has_more_than_one_bom" invisible="1"/> 
+                    <label for="total_weight">Total Weight</label>
+                    <div name="total_weight_calculations">
+                        <field name="total_weight"  class="oe_inline"/> 
+                        <button name="calculate_weight" string="Calculate Weight" type="object" class="oe_link pt-0" attrs="{'invisible':[('has_more_than_one_bom','==',False)]}"/>                                                
+                    </div>
+                </xpath>
+                <xpath expr="//button[@name='button_bom_cost']" position="replace">
+                    <button name="compute_final_priece" string="Calculate Price" type="object" class="oe_link pt-0" attrs="{'invisible':[('has_more_than_one_bom','==',False)]}"/>                                                
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

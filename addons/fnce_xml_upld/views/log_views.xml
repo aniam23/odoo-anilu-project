@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="log_reference_sequence" model="ir.sequence">
+          <field name="name">Log Reference Sequence</field>
+          <field name="code">fnce_xml_upld.log_reference</field>
+          <field name="prefix">Log/</field>
+          <field name="padding">4</field>
+        </record>
+        <record model="ir.ui.view" id="log_reference_list">
+          <field name="name">XML list</field>
+          <field name="model">fnce_xml_upld.log_reference</field>
+          <field name="arch" type="xml">
+            <tree create="false" >
+              <field name="name"/>
+              <field name="date"/>
+              <field name="invoiceRef"/>
+              <field name ="paymentRef" />
+              <field name="attachmentRef"/>
+              <field name="paymentRelation"/>
+            </tree>
+          </field>
+        </record>
+   
+        <record model="ir.ui.view" id="log_reference_upld_form">
+          <field name="name">Log</field>
+          <field name="model">fnce_xml_upld.log_reference</field>
+          <field name="arch" type="xml">
+            <form create="false" >
+              <sheet>
+                <group>
+                  <field name="name"/>
+                  <field name="date" readonly="1" />
+                  <field name="invoiceRef" readonly="1"/>
+                  <field name ="paymentRef" readonly="1" />
+                  <field name="attachmentRef"  readonly="1"/>
+                  <field name="paymentRelation"  readonly="1"/>
+                </group>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="log_reference_action_window">
+          <field name="name">XML Log</field>
+          <field name="res_model">fnce_xml_upld.log_reference</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Log Regestry" id="fnce_xml_upld_regestry" parent="fnce_xml_upld_xml"
+                  action="log_reference_action_window"/>
+    </data>
+</odoo>
