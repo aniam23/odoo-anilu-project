@@ -4,7 +4,6 @@ class WhellNut(models.Model):
     _name = 'wheel.nut'
     _description = 'Whell Nut'
    
-   
     ref_product = fields.Many2many(comodel_name='product.product', string="Seleccionar producto (llantas)")
     name = fields.Char(string="Name")
     number_wheel_nut = fields.Integer(string="Número de Birlos")

@@ -31,6 +31,7 @@
             <button name="previous_action" string="BACK" type="object" class="btn btn-primary" attrs="{'readonly': [('state', '!=', 'Sales Orders')]}"/>
             <button name="next_action" string="NEXT" type="object" class="btn btn-primary"/>
             <button name="action_print_all_documents" string="PRINT ALL" type="object" class="btn btn-primary"/>
+            <field name="email"  placeholder="Ingrese el correo del cliente"/>
             <field name="state" widget="statusbar" statusbar_visible="Sales Orders,Packing,MSO,HS7,Factura,Declaracion,State Send"/>
           </header>
           <sheet>
@@ -90,8 +91,8 @@
     </record>
                     
     
-    <menuitem name="Logistics Docs Packages" id="logistics_document_packages_menu_root"/>
-    <menuitem name="Logistics" id="logistics_document_packages" parent="logistics_document_packages_menu_root"/> 
+    <menuitem name="Logistics Docs Packages" id="logistics_document_packages_menu_root" />
+    <menuitem name="Logistics" id="logistics_document_packages" parent="logistics_document_packages_menu_root"  sequence="5"/>
     <menuitem name="Logistics Registry" id="logistics_document_packages_menu_1" parent="logistics_document_packages" action="logistics_document_packages_action_window"/>
     <menuitem name="Logistics Registry Tree" id="logistics_document_packages_menu_2" parent="logistics_document_packages" action="logistics_document_packages_action_window_tree"/>
     

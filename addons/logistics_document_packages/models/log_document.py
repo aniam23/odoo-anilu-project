@@ -8,7 +8,7 @@ from datetime import datetime
 from PyPDF2 import PdfFileMerger
 from io import BytesIO
 import os
-class LogDocument(models.Model):
+class LogisticsLogDocument(models.Model):
     _name = 'logistics.log_document'
     _description = 'Log Document for Sale Order' 
     name = fields.Text() 
@@ -55,14 +55,14 @@ class LogDocument(models.Model):
     def _valid_field_parameter(self, field, name):
         if name == 'tracking':
             return True
-        return super(LogDocument, self)._valid_field_parameter(field, name)
+        return super(LogisticsLogDocument, self)._valid_field_parameter(field, name)
     
     @api.model_create_multi
     def create(self, vals):
         if 'name' not in vals[0]:
             unique_name = f"Document_{random.randint(1, 9999)}"
             vals[0]['name'] = unique_name  
-        record = super(LogDocument, self).create(vals) 
+        record = super(LogisticsLogDocument, self).create(vals) 
         record.setDate()
         return record
         
@@ -115,6 +115,10 @@ class LogDocument(models.Model):
                 return
             self.state = states[next_index]
         return
+    
+   
+    
+    
     
     def send_action(self):
         order = None
@@ -541,7 +545,6 @@ class LogDocument(models.Model):
 
     def action_print_all_documents(self):
         email = self.env.context.get('email', False)  
-
         if not email:
             raise UserError('Debe proporcionar un correo electrónico para enviar los documentos.')
         merger = PdfFileMerger()

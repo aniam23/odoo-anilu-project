@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
         <record id="view_logistics_document_tree" model="ir.ui.view">
             <field name="name">logistics.document.tree</field>
             <field name="model">logistics.log_document</field>
@@ -32,9 +31,9 @@
 
       
         <menuitem id="menu_logistics_document_sub" 
-                 name="Pendientes de envio" 
-                 parent="logistics_document_packages_menu_root" 
-                 action="action_logistics_document_tree"
-                 sequence="15"/>
+          name="Pendientes de envio" 
+          parent="logistics_document_packages_menu_root" 
+          action="action_logistics_document_tree"
+          sequence="5"/> 
     </data>
 </odoo>

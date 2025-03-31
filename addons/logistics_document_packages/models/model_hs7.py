@@ -1,7 +1,7 @@
 
 from odoo import models, fields
 
-class CustomerStickers(models.Model):
+class ModelHs7(models.Model):
     _name = 'model.hs7'
     _description = 'model for hs7 trailers'
     ref_trailer = fields.Many2one(comodel_name='product.product', string="Seleccionar producto")

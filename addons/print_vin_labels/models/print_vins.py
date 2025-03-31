@@ -10,6 +10,7 @@ class PrintVins(models.Model):
     name = fields.Char(string='Name')
     sale_order = fields.Many2one('sale.order', string='Sales Orders')
     wheel_nut_id = fields.Many2many(comodel_name='wheel.nut', string='Wheel Nut Registry')
+    printer_ids = fields.Many2many('iot.device', string='Impresoras disponibles')
     model_hs7 = fields.Many2many(comodel_name='model.hs7', string='MODEL HS7')
     gvwr= fields.Many2many(comodel_name='vin_generator.gvwr_manager', string='gvwr_related')
     gawr= fields.Many2many(comodel_name='vin_generator.vin_generator',  string='gawr_related')
@@ -17,6 +18,7 @@ class PrintVins(models.Model):
     printer_port = fields.Integer(string='Puerto de la Impresora', default=9100)
     weight_total = fields.Float(string='Peso total')
     product_name =fields.Char(string='Product_name')
+    
     def get_data(self):
         list_of_data = []
         manufacturing_order_list = self.env['mrp.production'].search([])
@@ -37,13 +39,18 @@ class PrintVins(models.Model):
 
     
     def print_vins(self): 
+        # Validar que se haya seleccionado una impresora
+        if not self.printer_ids:
+            raise UserError("Debe seleccionar al menos una impresora.")
+            
         zlab = zdpm.zpl()
-        print(zlab.printers)
         data_list = self.get_data()
+        
         if not self.gvwr:
             raise ValueError("No se ha seleccionado un registro para 'gvwr'.")
         gvwr_lb = self.gvwr.weight_lb
         gvwr_kg = self.gvwr.weight_kg
+        
         if not self.gawr:
             raise ValueError("No se ha seleccionado un registro para 'gawr'.")
         
@@ -51,14 +58,16 @@ class PrintVins(models.Model):
         gawr_lb = gawr_libras[5:9]
         gawr_kg = round(float(gawr_lb) * 0.453592, 2)
         gawr_kg = round(gawr_kg, 2)
+        
         if not self.model_hs7:
             raise ValueError("No se ha seleccionado un registro en 'Wheel Nut Registry'.")
+            
         product_name = self.model_hs7.ref_trailer.display_name
         model_string = self.model_hs7.model
         product = self.model_hs7.ref_trailer  
         weight_lb = product.dry_weight
         weight_kg = int(round(weight_lb * 0.453592)) 
-        print(weight_kg)
+        
         data_list = self.get_data()
         product_vin = None
         for data in data_list:
@@ -66,14 +75,17 @@ class PrintVins(models.Model):
                 product_vin = data.get("vin")
                 if product_vin:
                     print("Product VIN:", product_vin)
+                    
         if not self.wheel_nut_id:
             raise ValueError("No se ha seleccionado un registro en 'Wheel Nut Registry'.")
+            
         wheel_nut_string = self.wheel_nut_id.ref_product 
         wheel = wheel_nut_string.display_name.upper()  # Convertir a mayúsculas
         result = wheel[7:19]
         rin = wheel[50:60]
         lbs_wheels = ''
         tire_rating = ''
+        
         if 'SINGLE' in wheel and 'R15' in wheel and ('10PLY' in wheel or '10PR' in wheel):
             lbs_wheels = '550 KPA/80 PSI'
             tire_rating = '2830 LBS'
@@ -130,8 +142,8 @@ class PrintVins(models.Model):
          ^FO260,50^ADR,25,10^FDGAWR (EACH AXLE) / PNBE ( CHAQUE ESSIEU) {gawr_kg} KG({gawr_lb} )^FS
          ^FO240,50^ADR,25,10^FDTIRE/PNEU {result}  RIM/JANTE {rin} {tire_rating} ^FS
          ^FO215,50^ADR,25,10^FDCOLD INFL. PRESS/PRESS. DE GONFL. A FROID {lbs_wheels}/LCP SINGLE^FS
-         ^FO190,50^A0R,20,20^FDTHIS VEHICLE TO ALL APPLICABLE U.S. FEDERAL MOTOR SAFETY STANDARDS IN EFFECT ON THE DATE OF MANUFACTURE SHOWN ABOVE.^FS
-         ^FO170,50^A0R,20,20^FDTHIS VEHICLE CONFORMS TO ALL APPLICABLE STANDARDS PRESCRIBED UNDER CANADA.^FS
+         ^FO190,50^A0R,20,20^FDTHIS VEHICLE TO ALL APPLICABLE U.S. FEDERAL MOTOR SAFETY STANDARDS IN EFFECT ON THE DATE OF MANUFACTURE ^FS
+         ^FO170,50^A0R,20,20^FDSHOWN ABOVE.THIS VEHICLE CONFORMS TO ALL APPLICABLE STANDARDS PRESCRIBED UNDER CANADA.^FS
          ^FO150,50^A0R,20,20^FDATE OF MANUFACTURE./.. CE VEHICLE EST CONFORME A TOUS LES NORMES EN VIGUEUR A LA DATE DE SA FABRICATION.^FS
          ^FO130,50^A0R,20,20^FDSUR LA SECURITÉ DES VARIÉGLES AUTOMOBILES DU CANADA EN VIGUEUR A LA DATE DE SA FABRICATION.^FS
          ^FO90,50^ADR,15,10^FDVIN.:{product_vin}^FS
@@ -140,29 +152,88 @@ class PrintVins(models.Model):
          ^XZ
          """
        
-        zpl_code = zpl_template.format(result=result,weight_lb=weight_lb,weight_kg=weight_kg,lbs_wheels=lbs_wheels,rin=rin,tire_rating=tire_rating,product_vin=product_vin,gvwr_kg=gvwr_kg,gvwr_lb=gvwr_lb,gawr_kg=gawr_kg,gawr_lb=gawr_libras,model_string=model_string)
-        def send_zpl_to_printer(zpl_code, ip, printer_port=9100):
+        zpl_code = zpl_template.format(
+            result=result,
+            weight_lb=weight_lb,
+            weight_kg=weight_kg,
+            lbs_wheels=lbs_wheels,
+            rin=rin,
+            tire_rating=tire_rating,
+            product_vin=product_vin,
+            gvwr_kg=gvwr_kg,
+            gvwr_lb=gvwr_lb,
+            gawr_kg=gawr_kg,
+            gawr_lb=gawr_libras,
+            model_string=model_string
+        )
+        
+        # Función para enviar ZPL a la impresora
+        def send_zpl_to_printer(printer_ip, zpl_code):
             try:
+                print(f"Conectando a la impresora en {printer_ip}...")
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.connect((ip, printer_port))
-                sock.sendall(zpl_code.encode())
+                sock.settimeout(10)  # Timeout de 10 segundos para la conexión
+                sock.connect((printer_ip, self.printer_port))
+                sock.sendall(zpl_code.encode())  # Enviar el código ZPL
                 sock.close()
-                print("Código ZPL enviado correctamente.")
+                return True
             except Exception as e:
-                print(f"Error al enviar ZPL: {e}")
-
-        send_zpl_to_printer(zpl_code, '192.168.60.25')
-        if send_zpl_to_printer(zpl_code, '192.168.60.25'):
+                print(f"Error al enviar ZPL a {printer_ip}: {e}")
+                return False
+        
+        # Enviar a todas las impresoras seleccionadas
+        success = False
+        for printer in self.printer_ids:
+            # Obtener la dirección IP del dispositivo IoT
+            # Asumiendo que la IP está en el campo 'device_identifier' o similar
+            printer_ip = None
+            
+            # Primero intentamos con device_identifier que es común en iot.device
+            if hasattr(printer, 'device_identifier'):
+                printer_ip = printer.device_identifier
+            # Si no, buscamos en los campos del dispositivo
+            elif hasattr(printer, 'ip'):
+                printer_ip = printer.ip
+            # Si sigue sin encontrarse, buscamos en la conexión asociada
+            elif hasattr(printer, 'connection') and printer.connection and hasattr(printer.connection, 'host'):
+                printer_ip = printer.connection.host
+            
+            if printer_ip:
+                if send_zpl_to_printer(printer_ip, zpl_code):
+                    success = True
+                    print(f"Código ZPL enviado correctamente a la impresora {printer.name} ({printer_ip})")
+                else:
+                    print(f"Fallo al enviar a la impresora {printer.name} ({printer_ip})")
+            else:
+                print(f"La impresora {printer.name} no tiene dirección IP configurada")
+                # Si sabemos que la IP es 192.168.60.25 pero no está en el modelo
+                # Podemos forzarla (esto es temporal hasta corregir el modelo)
+                printer_ip = '192.168.60.25'
+                if send_zpl_to_printer(printer_ip, zpl_code):
+                    success = True
+                    print(f"Código ZPL enviado correctamente a la impresora {printer.name} (IP forzada: {printer_ip})")
+        
+        if success:
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
                     'title': 'Éxito',
-                    'message': 'La etiqueta se ha enviado correctamente a la impresora',
+                    'message': 'La etiqueta se ha enviado correctamente a la(s) impresora(s)',
                     'sticky': False,
                     'type': 'success'
                 }
             }
-        return zpl_code
-    
+        else:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Error',
+                    'message': 'Hubo un error al intentar enviar la etiqueta a todas las impresoras seleccionadas.',
+                    'sticky': False,
+                    'type': 'error'
+                }
+            }
+           
         

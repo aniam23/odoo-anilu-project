@@ -1,7 +1,7 @@
 
 from odoo import models, fields
 
-class CustomerFreight(models.Model):
+class FreightPartner(models.Model):
     _name = 'freight.partner'
     _description = 'Price of Freight'
 

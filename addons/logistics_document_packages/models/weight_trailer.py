@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-class Weight(models.Model):
+class WeightInfo(models.Model):
     _name = 'weight.info'
     _description = 'weight of trailers'
 
