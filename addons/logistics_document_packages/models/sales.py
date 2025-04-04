@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
     )
    
     conexsend = fields.Many2one('send.order', string="Estado de envio")
-    
+    fletero = fields.Text(string="Fletero")
     @api.depends('state')
     def _compute_show_send_order_button(self): 
         for order in self:

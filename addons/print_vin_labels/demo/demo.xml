@@ -1,7 +1,0 @@
-<odoo>
-    <data>
-       <record id="object0" model="print_vin_labels_.print_vin_labels"> 
-         <field name="name">Object 0</field> 
-       </record>
-    </data>
-</odoo>

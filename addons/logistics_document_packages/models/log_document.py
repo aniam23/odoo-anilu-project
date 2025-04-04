@@ -117,9 +117,6 @@ class LogisticsLogDocument(models.Model):
         return
     
    
-    
-    
-    
     def send_action(self):
         order = None
         send_state_form_action_window = self.env.ref('send_order.send_state_form_action_window', False)
