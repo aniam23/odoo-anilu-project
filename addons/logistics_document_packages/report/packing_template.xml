@@ -101,6 +101,11 @@
                             <t t-esc="manual_data['packing_trailer']" />
                         </br>
 
+                        <br>
+                            <strong> TRAILER PLATES:</strong>
+                            <t t-esc="manual_data['packing_plates_trailer']" />
+                        </br>
+
                     </div>
                   
                     <br>
@@ -163,7 +168,7 @@
                     
                     
                 
-                    <h2 style="position:center; left:200px; font-weight: bold;  font-size:15px; ">Signature:____________________________________________  Date:___________________________________________ </h2>
+                    <h2 style="position:center; left:200px; font-weight: bold;  font-size:15px; ">DRIVERS SIGNATURE:____________________________________________  DATE:___________________________________________ </h2>
                     <h2 style="position:center; left:150px;  font-size:15px;  font-weight: lighter;"> IF NOT CALLED $100.00 DLLS PENALTY WILL BE CHARGED TO TRUCKING COMPANY </h2>
                     <h2 style="position:center; left:150px;  font-size:15px;  font-weight: lighter;"> SI NO SE LLAMA,SE COBRARA UNA MULTA DE $100.00 DLLS ALA EMPRESA DE CAMIONES </h2>
                     <div style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">
@@ -176,7 +181,7 @@
                     <h2 style="text-align:center; left:200px;  font-size:15px; font-weight: lighter;">NOTA: FAVOR DE ENVIAR LA FACTURA DEL FLETE Y PACKING SLIP FIRMADO POR EL DEALER AL SIGUIENTE CORREO: invoice.logistics@horizontrailers.com</h2>
                     <br>
                         <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">______________________________________</h2>
-                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;"> DRIVERS SIGNATURE </h2>
+                        <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;"> RECEIVED </h2>
                     </br>
                     <br>
                         <h2 style="text-align:center; left:300px;  font-size:15px;  font-weight: lighter;">______________________________________ </h2>

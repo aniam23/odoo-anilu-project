@@ -40,10 +40,10 @@
           <field name="view_mode">tree,form</field>
         </record>
         
-        <menuitem name="Wheel nut Options" id="options_whell_nut" parent="logistics_document_packages_menu_root"/>
+        <menuitem name="Opciones llanta" id="options_whell_nut" parent="logistics_document_packages_menu_root"/>
 
-        <menuitem name="Add wheel nut" id="new_wheel_nut" parent="options_whell_nut" action="wheel_nut_form_action_window"/>
+        <menuitem name="Agregar Birlos " id="new_wheel_nut" parent="options_whell_nut" action="wheel_nut_form_action_window"/>
 
-        <menuitem name="wheel nut registry" id="wheel_nut_registry" parent="options_whell_nut" action="wheel_nut_log_action_window"/>
+        <menuitem name="Ver registros" id="wheel_nut_registry" parent="options_whell_nut" action="wheel_nut_log_action_window"/>
     </data>
 </odoo>

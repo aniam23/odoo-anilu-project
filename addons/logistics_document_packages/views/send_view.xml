@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<data>
   <record model="ir.ui.view" id="send_order_form">
     <field name="name">send.order.form</field>
     <field name="model">send.order</field>
@@ -406,4 +407,5 @@
   <menuitem name="State Send" id="options_send_state" parent="logistics_document_packages_menu_root"/>
   <menuitem name="View Sends" id="view_send" parent="options_send_state" action="send_state_form_action_window"/>
   <menuitem name="Sends Registry" id="registry_send" parent="options_send_state" action="send_state_log_action_window"/>
+</data>
 </odoo>

@@ -5,51 +5,37 @@
             <field name="name">main.view.form</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <form>
+                <form create="false" delete="false">
                     <sheet>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <h1>HT LOGISTICS</h1>
-                                    <field  name="state" widget="statusbar" 
-                                            statusbar_visible="PROXIMAS CARGAS,CARGAS RTS EN ESPERA,SO LISTOS PARA ENVIAR,EN TRANSITO,COMPROBANTE DE ENTREGA,ENTREGADO"
-                                            options="{'clickable': '2'}" style="display: none;"/>
+                                <div style="text-align: right;">
+                                    <button string="Actualizar" type="object" name="update"/>
                                 </div>
                             </div>
-                          
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="background-color: #e7f5fe;">
                                     <h3 class="panel-title">
-                                        <i class="fa fa-calendar-check-o"/> PRÓXIMAS CARGAS
-                                        <button name="write" string="V"  
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'PROXIMAS CARGAS'}"/>
+                                        <i class="fa fa-calendar-check-o"/> EN ESPERA DE MANUFACTURA
                                     </h3>
                                 </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','PROXIMAS CARGAS')]}">
-                                    <field string="PROXIMAS CARGAS" name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
+                                <div class="panel-body">
+                                    <field string="EN ESPERA DE MANUFACTURA" name="sale_orders_pending_to_manufacure">
+                                        <tree >
+                                            <field name="name" />
+                                            <field name="partner_id" />
+                                            <field name="partner_address_full"/>
                                             <field name="amount_total"/>
+                                            <field name="fletero"/>
                                             <field name="state"/>
+                                            <field name="fechapro"/>
+                                            <field name="proof_of_delivery" />
+                                            <field name="downloaded_attachment_ids" />
+                                            <button name="open_sale_order_edit"
+                                            type="object"
+                                            icon="fa-edit"
+                                            context="{'active_id': id}"/>
                                         </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
                                     </field>
                                 </div>
                             </div>
@@ -57,71 +43,51 @@
                                 <div class="panel-heading" style="background-color: #fdedec;">
                                     <h3 class="panel-title">
                                         <i class="fa fa-hourglass-half"/> CARGAS RTS EN ESPERA
-                                        <button name="write" string="V" 
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'CARGAS RTS EN ESPERA'}"/>
                                     </h3>
                                 </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','CARGAS RTS EN ESPERA')]}">
-                                    <field string="CARGAS RTS EN ESPERA" name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
+                                <div class="panel-body">
+                                    <field string="CARGAS RTS EN ESPERA" name="sale_order_waiting_ids" mode="tree" >
+                                        <tree >
+                                            <field name="name" />
+                                            <field name="partner_id" />
+                                            <field name="partner_address_full"/>
                                             <field name="amount_total"/>
+                                            <field name="fletero"/>
                                             <field name="state"/>
+                                            <field name="fechapro"/>
+                                            <field name="proof_of_delivery" />
+                                            <field name="downloaded_attachment_ids"  />
+                                            <button name="open_sale_order_edit"
+                                            type="object"
+                                            icon="fa-edit"
+                                            context="{'active_id': id}"/>
                                         </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
                                     </field>
                                 </div>
                             </div>
                             <div class="panel panel-default">
-                                <div class="panel-heading" style="background-color: #fff8e1;">
+                                <div class="panel-heading" style="background-color: #faffe0;">
                                     <h3 class="panel-title">
-                                        <i class="fa fa-check-circle"/> SO LISTOS PARA ENVIAR
-                                        <button name="write" string="V" 
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'SO LISTOS PARA ENVIAR'}"/>
+                                        <i class="fa fa-upload"/> EN ESPERA DE DOCUMENTOS
                                     </h3>
                                 </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','SO LISTOS PARA ENVIAR')]}">
-                                    <field name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
+                                <div class="panel-body">
+                                    <field string="EN ESPERA DE DOCUEMNTOS" name="sale_order_in_wait_of_docuemnts">
+                                        <tree >
+                                            <field name="name" />
+                                            <field name="partner_id" />
+                                            <field name="partner_address_full"/>
                                             <field name="amount_total"/>
+                                            <field name="fletero"/>
                                             <field name="state"/>
+                                            <field name="fechapro"/>
+                                            <field name="proof_of_delivery" />
+                                            <field name="downloaded_attachment_ids"  />
+                                            <button name="open_sale_order_edit"
+                                            type="object"
+                                            icon="fa-edit"
+                                            context="{'active_id': id}"/>
                                         </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
                                     </field>
                                 </div>
                             </div>
@@ -129,35 +95,25 @@
                                 <div class="panel-heading" style="background-color: #f3e5f5;">
                                     <h3 class="panel-title">
                                         <i class="fa fa-truck"/> EN TRANSITO
-                                        <button name="write" string="V" 
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'EN TRANSITO'}"/>
                                     </h3>
                                 </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','EN TRANSITO')]}">
-                                    <field name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
+                                <div class="panel-body">
+                                    <field string="EN TRANSITO" name="sale_order_in_transit_ids">
+                                       <tree>
+                                            <field name="name" />
+                                            <field name="partner_id" />
+                                            <field name="partner_address_full"/>
                                             <field name="amount_total"/>
+                                            <field name="fletero"/>
                                             <field name="state"/>
+                                            <field name="fechapro"/>
+                                            <field name="proof_of_delivery" />
+                                            <field name="downloaded_attachment_ids"  />
+                                            <button name="open_sale_order_edit"
+                                            type="object"
+                                            icon="fa-edit"
+                                            context="{'active_id': id}"/>
                                         </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
                                     </field>
                                 </div>
                             </div>
@@ -165,71 +121,25 @@
                                 <div class="panel-heading" style="background-color: #e8f5e9;">
                                     <h3 class="panel-title">
                                         <i class="fa fa-file-text-o"/> COMPROBANTE DE ENTREGA
-                                        <button name="write" string="V" 
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'COMPROBANTE DE ENTREGA'}"/>
                                     </h3>
                                 </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','COMPROBANTE DE ENTREGA')]}">
-                                    <field name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
+                                <div class="panel-body">
+                                    <field string="COMPROBANTE DE ENTREGA" name="sale_order_pod_ids">
+                                        <tree >
+                                            <field name="name" />
+                                            <field name="partner_id" />
+                                            <field name="partner_address_full"/>
                                             <field name="amount_total"/>
+                                            <field name="fletero"/>
                                             <field name="state"/>
+                                            <field name="fechapro"/>
+                                            <field name="proof_of_delivery" />
+                                            <field name="downloaded_attachment_ids"  />
+                                            <button name="open_sale_order_edit"
+                                            type="object"
+                                            icon="fa-edit"
+                                            context="{'active_id': id}"/>
                                         </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
-                                    </field>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading" style="background-color: #f6ddcc;">
-                                    <h3 class="panel-title">
-                                        <i class="fa fa-check"/> ENTREGADO
-                                        <button name="write" string="V" 
-                                                type="object" 
-                                                class="oe_link"
-                                                args="{'state': 'ENTREGADO'}"/>
-                                    </h3>
-                                </div>
-                                <div class="panel-body" attrs="{'invisible': [('state','!=','ENTREGADO')]}">
-                                    <field name="sale_order_ids" 
-                                           mode="tree,kanban">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="partner_id"/>
-                                            <field name="date_order"/>
-                                            <field name="amount_total"/>
-                                            <field name="state"/>
-                                        </tree>
-                                        <kanban>
-                                            <templates>
-                                                <t t-name="kanban-box">
-                                                    <div class="oe_kanban_global_click">
-                                                        <strong><field name="name"/></strong>
-                                                        <div>Cliente: <field name="partner_id"/></div>
-                                                        <div>Fecha: <field name="date_order"/></div>
-                                                        <div>Total: <field name="amount_total"/></div>
-                                                        <div>Estado: <field name="state"/></div>
-                                                    </div>
-                                                </t>
-                                            </templates>
-                                        </kanban>
                                     </field>
                                 </div>
                             </div>
@@ -238,15 +148,14 @@
                 </form>
             </field>
         </record>
-
         <record model="ir.actions.act_window" id="action_main_view_form">
             <field name="name">Documentos de Paquetes</field>
             <field name="res_model">main.view</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="main_view_form"/>
-            <field name="context">{'search_default_show_all': 1}</field>
+            <field name="res_id">1</field>
+            <field name="target">current</field>
         </record>
-
         <menuitem id="menu_logistics_document_sub" 
             name="Pendientes de envio" 
             parent="logistics_document_packages_menu_root" 

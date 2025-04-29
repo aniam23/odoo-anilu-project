@@ -80,7 +80,7 @@
                                     <t t-esc="info['invoice_number']" />
                                 </p>
                                 <h2  class="make">Horizon Trailers LLC </h2>
-                                <h2 style="text-align: right; margin-right: 5px; font-weight: lighter;  margin-top: 30px; font-size: 10px; font-family: Arial, sans-serif; "> <t t-esc="info['shipping_weight']" /> KG </h2>
+                                <h2 style="text-align: right; margin-right: 5px; font-weight: lighter;  margin-top: 30px; font-size: 10px; font-family: Arial, sans-serif; "> <t t-esc="info['dry_weight']" /> KG </h2>
 
                             </div>
 

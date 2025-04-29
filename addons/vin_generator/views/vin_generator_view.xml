@@ -18,7 +18,7 @@
       <field name="name">VIN Generator</field>
       <field name="model">vin_generator.vin_generator</field>
       <field name="arch" type="xml">
-        <form create="false">
+        <form>
            <sheet>
             <group>
               <field name="vin_count" readonly='1'/>
@@ -63,9 +63,9 @@
     
     <menuitem name="VIN" id="vin_generator.vin" parent="vin_generator.menu_root"/>
 
-    <!-- <menuitem name="Add VIN" id="vin_generator.menu_1" parent="vin_generator.vin"
-          action="vin_generator.action_window"/> -->
-    <menuitem name="VIN Regestry" id="vin_generator.menu_1" parent="vin_generator.vin"
+    <menuitem name="Add VIN" id="vin_generator.menu_1" parent="vin_generator.vin"
+          action="vin_generator.action_window"/>
+    <menuitem name="VIN Regestry" id="vin_generator.menu_2" parent="vin_generator.vin"
           action="vin_generator.action_window_tree"/>
   </data>
 </odoo>

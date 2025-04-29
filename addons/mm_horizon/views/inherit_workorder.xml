@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="view_inherit_mrp_workorder_mm" model="ir.ui.view">
+            <field name="name">view.inherit.mrp.workorder.mm</field>
+            <field name="model">mrp.workorder</field>
+            <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='production_id']" position="after">
+                    <field name="mm_state_fab"/>
+                </xpath>
+             </field>
+        </record>
+    </data>
+</odoo>

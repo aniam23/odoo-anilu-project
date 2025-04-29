@@ -1,24 +1,35 @@
 <odoo>
-    <record id="view_order_form_inherit" model="ir.ui.view">
-        <field name="name">sale.order.form.inherit</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">
-            <div name="button_box" position="inside">
-                <field name="show_send_order_button" invisible="1"/>
-                <button 
-                    class="oe_stat_button" 
-                    string="Send State" 
-                    type="object" 
-                    name="send_action" 
-                    icon="fa-paper-plane"
-                    attrs="{'invisible': [('show_send_order_button', '=', False)]}"
-                />
-            </div>
-
-            <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="fletero" placeholder="Ej: Transportista López"/>
-            </xpath>
-        </field>
-    </record>
+    <data>
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='customer_signature']" position="after">
+                    <page string="Logistica" name="customs">
+                        <group>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                            <field name="fletero" placeholder="Ej: Transportista López" readonly="0"/>
+                            <field name="downloaded_attachment_ids"  widget="many2many" readonly="0"/>
+                            <field name="proof_of_delivery" widget="many2many_binary" readonly="0"/>
+                            <field name="partner_address_full" invisible="1"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_sale_order" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.logistics</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Datos de Logistica">
+                        <field name="fletero" placeholder="Ej: Transportista López" readonly="0"/>
+                        <field name="downloaded_attachment_ids" widget="many2many_binary"  readonly="1"/>
+                        <field name="proof_of_delivery" widget="many2many_binary" readonly="0"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
 </odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+mm_horizon.access_workcenter_order_completion,access_workcenter_order_completion,mm_horizon.model_workcenter_order_completion,base.group_user,1,1,1,1
+mm_horizon.access_workcenter_order_media,access_workcenter_order_media,mm_horizon.model_workcenter_order_media,base.group_user,1,1,1,1
+mm_horizon.access_sequence_fab,access_sequence_fab,mm_horizon.model_sequence_fab,base.group_user,1,1,1,1

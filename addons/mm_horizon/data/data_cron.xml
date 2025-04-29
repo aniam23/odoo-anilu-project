@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_calculate_order" model="ir.cron">
+        <field name="name">Calcular ordenes por dia</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_workcenter_order_completion"/>
+        <field name="code">model.cron_order_byday()</field>
+        <field name="state">code</field>
+    </record>
+    <record id="ir_cron_calculate_order_month" model="ir.cron">
+        <field name="name">Calcular ordenes por mes</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_workcenter_order_completion"/>
+        <field name="code">model.cron_order_bymonth()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

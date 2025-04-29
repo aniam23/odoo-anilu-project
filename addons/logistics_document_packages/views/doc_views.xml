@@ -26,13 +26,12 @@
       <field name="model">logistics.log_document</field>
       <field name="arch" type="xml">
         <form string="Logistics Document Packages">
-       
           <header>
-            <button name="previous_action" string="BACK" type="object" class="btn btn-primary" attrs="{'readonly': [('state', '!=', 'Sales Orders')]}"/>
-            <button name="next_action" string="NEXT" type="object" class="btn btn-primary"/>
-            <button name="action_print_all_documents" string="PRINT ALL" type="object" class="btn btn-primary"/>
-            <field name="email"  placeholder="Ingrese el correo del cliente"/>
-            <field name="state" widget="statusbar" statusbar_visible="Sales Orders,Packing,MSO,HS7,Factura,Declaracion,State Send"/>
+            <button name="previous_action" string="REGRESAR" type="object" class="btn btn-primary" attrs="{'readonly': [('state', '!=', 'Sales Orders')]}"/>
+            <button name="next_action" string="SIGUIENTE" type="object" class="btn btn-primary"/>
+            <button name="action_print_all_documents" string="GENERAR DOCUMENTOS" type="object" class="btn btn-primary" save="1" />
+            <field name="email"  placeholder="Ingresar correo"/>
+            <field name="state" widget="statusbar" statusbar_visible="Sales Orders,Packing,MSO,HS7,Factura,Declaracion"/>
           </header>
           <sheet>
               <group string="Sales Order" attrs="{'invisible': [('state', '!=', 'Sales Orders')]}">
@@ -45,9 +44,10 @@
                 <field name="packing_truck"/>
                 <field name="packing_plates"/>
                 <field name="packing_trailer"/>
+                <field name="packing_plates_trailer"/>
                 <field name="comentarios"/>
                 <field name="tramitador"/>
-                <button name="print_action" string="PRINT" type="object" class="btn btn-primary"/>
+                <button name="print_action" string="IMPRIMIR" type="object" class="btn btn-primary"/>
               </group>
               <group string="MSO" attrs="{'invisible': [('state', '!=', 'MSO')]}">
                 
@@ -68,10 +68,8 @@
               <group string="Declaracion" attrs="{'invisible': [('state', '!=', 'Declaracion')]}">
               </group>
           
-              <group string="State Send" attrs="{'invisible': [('state', '!=', 'State Send')]}">
-              </group>
-              <button name="send_action" string="SEND STATE" type="object" class="btn btn-primary" attrs="{'invisible': [('state', 'in', ['Sales Orders','Packing','MSO','HS7','Factura','Declaracion'])]}"/>
-              <button name="print_action" string="PRINT" type="object" class="btn btn-primary" attrs="{'invisible': [('state', 'in', ['Sales Orders', 'Packing' ,'State Send'])]}"/>
+              
+              <button name="print_action" string="IMPRIMIR" type="object" class="btn btn-primary" attrs="{'invisible': [('state', 'in', ['Sales Orders', 'Packing' ])]}"/>
              
           </sheet>
         </form>
@@ -91,10 +89,10 @@
     </record>
                     
     
-    <menuitem name="Logistics Docs Packages" id="logistics_document_packages_menu_root" />
-    <menuitem name="Logistics" id="logistics_document_packages" parent="logistics_document_packages_menu_root"  sequence="5"/>
-    <menuitem name="Logistics Registry" id="logistics_document_packages_menu_1" parent="logistics_document_packages" action="logistics_document_packages_action_window"/>
-    <menuitem name="Logistics Registry Tree" id="logistics_document_packages_menu_2" parent="logistics_document_packages" action="logistics_document_packages_action_window_tree"/>
+    <menuitem name="Logistica HT" id="logistics_document_packages_menu_root" />
+    <menuitem name="Logistica" id="logistics_document_packages" parent="logistics_document_packages_menu_root"  sequence="5"/>
+    <menuitem name="Nuevo Registro" id="logistics_document_packages_menu_1" parent="logistics_document_packages" action="logistics_document_packages_action_window"/>
+    <menuitem name="Ver Registros" id="logistics_document_packages_menu_2" parent="logistics_document_packages" action="logistics_document_packages_action_window_tree"/>
     
   </data>
 </odoo>

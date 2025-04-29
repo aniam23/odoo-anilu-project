@@ -18,7 +18,7 @@
                                  }
                                  .custom_date_style {
                                  color: black;
-                                 font-size: 10px;
+                                 font-size: 20px;
                                  text-align: left;
                                  margin-top: 20px;
                                  margin-left: 90px;
@@ -26,7 +26,7 @@
                                  }
                                  .titulo-estilo {
                                  color: #000000;
-                                 font-size: 10px;
+                                 font-size: 20px;
                                  margin-top:210px;
                                  text-align: right; 
                                  margin-right: 70px;
@@ -35,7 +35,7 @@
                                  }
                                  .titulo-fijo {
                                  color: #000000;
-                                 font-size: 10px;
+                                 font-size: 20px;
                                  margin-top:200px;
                                  text-align: right; 
                                  margin-right: 130px;
@@ -44,7 +44,7 @@
                                  }
                                  .make {
                                  color: #000000;
-                                 font-size: 10px;
+                                 font-size: 20px;
                                  text-align: right; 
                                  margin-right: 50px;
                                  font-weight: lighter;
@@ -52,81 +52,90 @@
                                  }
                                  .titulo_info {
                                  color: #000000;
-                                 font-size: 10px;
+                                 font-size: 20px;
                                  font-weight: lighter;
                                  margin-left: 120px;
                                  font-family: Arial, sans-serif;
                                  }
                                 .titulo_fin {
                                 color: #000000;
-                                font-size: 10px;
+                                font-size: 20px;
                                 text-align: right; 
                                 margin-right: 100px;
                                 font-weight: lighter;
-                                margin-top: 80px;
+                                margin-top: 70px;
                                 font-family: Arial, sans-serif;
                                 }
                             </style>
-                            <div style=" position:relative; left:150px;" >
-                                <img src="https://www.horizontrailers.com/web/image/642-9ccecb60/logos%202023%20vector%20curvas%20FINAL-02.png" alt="Logo" style="width: 200px; height: auto;  " />
+                            <div style=" position:relative; left:210px;" >
+                                <img src="https://horizontrailers.odoo.com/web/image/555-ed333e43/logos%202023%20vector%20curvas%20FINAL-02.png" alt="Logo" style="width: 400px; height: auto;  " />
                             </div>
-                                    <div style=" position:absolute; right: 320px;  font-size: 10px; font-family: Arial, sans-serif; font-weight: lighter; top: 50px; ">
+                                    <div style=" position:absolute; right:350px;  font-size: 20px; font-family: Arial, sans-serif; font-weight: lighter; top: 270px; ">
                                         <p>
                                             <t t-esc="info['year']" />
                                         </p>   
                                     </div>
 
-                            <div style="text-align: right; margin-right: 80px; font-size: 10px; font-family: Arial, sans-serif; top: 30px;">
-                                <p>
-                                    <t t-esc="info['invoice_number']" />
-                                </p>
-                                <h2  class="make">Horizon Trailers LLC </h2>
-                                <h2 style="text-align: right; margin-right: 5px; font-weight: lighter;  margin-top: 30px; font-size: 10px; font-family: Arial, sans-serif; "> <t t-esc="data['trailers_weight_details']" />KG </h2>
-
-                            </div>
-
-                                    <div style="text-align: right; margin-right: 150px; font-weight: lighter; font-size: 10px; top:500px; font-family: Arial, sans-serif;">
+                                    <div style="text-align: right; margin-right: 20px; font-size: 20px; font-family: Arial, sans-serif; top: px;">
+                                        <br></br>
+                                        <br></br>
                                         <p>
-                                            <t t-esc="info['model_name'][:13]" />
+                                            <t t-esc="info['invoice_number']" />
+                                        </p>
+                                        <br></br>
+                                        <h2  class="make">Horizon Trailers LLC </h2>
+                                        <h2 style="text-align: right; margin-right: 5px; font-weight: lighter;  margin-top: 50px; font-size: 20px; font-family: Arial, sans-serif; "> <t t-esc="data['trailers_weight_details']" />KG </h2>
+        
+                                    </div>
+
+                                    <div style="text-align: right; margin-right: 30px; font-weight: lighter; font-size: 20px; top:500px; font-family: Arial, sans-serif;">
+                                        <br></br>
+                                        <p>
+                                            <t t-esc="info['model_name']" />
                                         </p>
                                     </div>
 
-                                <div style="text-align: left;  margin-top:-115px; margin-left: 60px; font-size: 10px; font-family: Arial, sans-serif; ">
+                                <div style="text-align: left;  margin-top:-260px; margin-left: 60px; font-size: 20px; font-family: Arial, sans-serif; ">
+                                    <br></br>
                                     <p>
                                         <t t-esc="info['date']" />
                                     </p>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
                                     <p>
                                         <t t-esc="info['vin']" />
                                     </p>
-                                    <div style="text-align: left;  margin-top:30px;">
+                                    <div style="text-align: left;  margin-top:15px;">
                                         <p>
                                             <t t-esc="info['body_type']"/>
                                         </p>
                                     </div>
                                 </div>
 
-                                <div style="text-align: left;  margin-top:30px; margin-left: 115px; font-size: 10px;  font-weight: lighter; font-family: Arial, sans-serif; ">
+                                <div style="text-align: left;  margin-top:20px; margin-left: 130px; font-size: 20px;  font-weight: lighter; font-family: Arial, sans-serif; ">
                                      <p>
                                         <t t-esc="info['gvwr']" />
                                     </p>
                                 </div>
                         </div>
-                        <div style="clear: both; margin-top: 20%;">
+                        <div style="clear: both; margin-top: 25%;">
                             <h2 class="titulo_info">HBS TRAILERS SALES</h2>
                             <h2 class="titulo_info">1903 S. Irby St.</h2>
                             <h2 class="titulo_info">FLORENCE, SOUTH CAROLINA 29505</h2>
 
                             <h2 class="titulo_fin">Horizon Trailers Mexico S de RL de CV</h2>
+                            <br></br>
                             <div style="text-align: right; margin-right: 80px;  margin-top: 20px;">
                                 <img src="https://azaharaletras.com/wp-content/uploads/2023/03/firma-m-gonzalez-4.jpg.webp" alt="Logo" style="width:100px; height:auto; text-align: right; margin-right: 90px;"/>
                             </div>
-                            <h2 style="text-align: right; margin-right: 170px; margin-top: 25px;" class="titulo-fijo" >Riva Palacio-Chihuahua</h2>
+                            <br></br>
+                            <h2 style="text-align: right; margin-right: 170px; margin-top: 40px;" class="titulo-fijo" >Riva Palacio-Chihuahua</h2>
                         </div>
                     </div>
                     <t t-if="info['last_data'] != True">
                         <div style="page-break-after:always;"/>
                     </t>
-                    
                 </t>
             </t>
         </t>

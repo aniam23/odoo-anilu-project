@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models,fields,api
+
 class product_gvwr(models.Model):
     _inherit = 'product.template'
     
@@ -53,6 +54,7 @@ class product_gvwr(models.Model):
 
     axles = fields.Selection(
         selection=[
+            ("NO AXLE","NO AXLE"),
             ("SINGLE AXLE","SINGLE AXLE"),
             ("2 AXLES","2 AXLES"),
             ("3 AXLES","3 AXLES"),   
@@ -72,12 +74,15 @@ class product_gvwr(models.Model):
             ('REMOVABLE GOOSENECK','REMOVABLE GOOSENECK'),
             ('CHASSIS','CHASSIS'),
             ('TANKER','TANKER'),
-            ('END DUMP','END DUMP')
+            ('END DUMP','END DUMP'),
+            ('DUMPSTER BIN', 'DUMPSTER BIN')
         ],
-        string="Trailer Type"
+        string="Trailer Type",
+        default= "DUMP TRAILER"
     )
+
     @api.model
-    def year_selection(self): 
+    def year_selection(self):
         year = 2021 # replace 2000 with your a start year
         year_list = []
         while year != 2040: # replace 2030 with your end year
@@ -97,7 +102,8 @@ class product_child_gvwr(models.Model):
     gvwr_child = fields.Many2one(
         'vin_generator.gvwr_manager', 'GVWR Child'
     )
-
+    trailer_code = fields.Char(string="Código")
+    trailer_name = fields.Char(string="Nombre")
     @api.model_create_multi
     def create(self, vals):
         result = super(product_child_gvwr, self).create(vals)

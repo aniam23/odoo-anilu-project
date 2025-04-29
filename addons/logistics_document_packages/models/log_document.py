@@ -34,10 +34,9 @@ class LogisticsLogDocument(models.Model):
         ('MSO', 'MS0'),
         ('HS7', 'HS7'),
         ('Factura', 'Factura'),
-        ('Declaracion', 'Declaracion'),
-        ('State Send', 'State Send')
+        ('Declaracion', 'Declaracion')
+        
     ], string='State', default='Sales Orders', store=True, tracking=True)
-    
     invoice = fields.Many2one(comodel_name='account.move',                                                                                                                                                         )
     mso_dictionary = fields.One2many('mso.data','log_document_id', string='MSOs')
     checkbox = fields.Boolean(string='Selected', default=False)
@@ -49,9 +48,14 @@ class LogisticsLogDocument(models.Model):
     packing_truck = fields.Text('TRUCK')
     packing_plates = fields.Text('PLATES')
     packing_trailer = fields.Text('TRAILER')
+    packing_plates_trailer = fields.Text('PLATES TRAILER')
     comentarios = fields.Text('COMMENTS')
     tramitador = fields.Text('TRAMITADOR')
-  
+    downloaded_attachment_ids = fields.Many2one(
+    comodel_name='ir.attachment',      
+    string="Archivos Descargados",store=True
+    )
+
     def _valid_field_parameter(self, field, name):
         if name == 'tracking':
             return True
@@ -77,7 +81,7 @@ class LogisticsLogDocument(models.Model):
 
     @api.onchange('sale_order')
     def _onchange_sale_order(self):
-        # self.mso_state()
+        self.mso_state()
         if self.sale_order:
             for invoice in self.sale_order.invoice_ids:
                if not invoice.print_button_visible:
@@ -116,82 +120,80 @@ class LogisticsLogDocument(models.Model):
             self.state = states[next_index]
         return
     
-   
-    def send_action(self):
-        order = None
-        send_state_form_action_window = self.env.ref('send_order.send_state_form_action_window', False)
-        self.ensure_one()
-        sale_order = self.sale_order
-        document_id = self.id 
-        fecha_hoy = time.localtime()
-        fecha_formateada = time.strftime('%Y-%m-%d', fecha_hoy)
-        print(fecha_formateada)
-        if sale_order:
-            customer_email = sale_order.partner_id.email  
-            if not customer_email:
-                print("No se encontró el email del cliente en la orden de venta.") 
-            sale_order.write({'show_send_order_button': True})
-            sale_order.action_confirm()
-            order = self.env['send.order'].browse(self.id)
-        if order.exists():  
-            if hasattr(order, 'value_state'): 
-                try:
-                    order.value_state()  
-                    print("Send Order encontrado y value_state ejecutado:", order)
-                except Exception as e:
-                    print(f"Error al ejecutar value_state: {e}")
-            else:
-                print("Método value_state no encontrado en el objeto send.order.")
-        else:
-            if sale_order:
-                customer_name = sale_order.partner_id.display_name
-                customer_email = sale_order.partner_id.email  
-                product_id = sale_order.order_line[0].product_id.id  
-                invoice_number = sale_order.name
-                shipping_location = sale_order.warehouse_id.name
-                ship_date = fecha_formateada
-                creation_log = sale_order.create_date
-                due_date = self.sale_order.validity_date
-                ship_to = self. sale_order.partner_id.contact_address
+    #region 
+    # def send_action(self):
+    #     order = None
+    #     send_state_form_action_window = self.env.ref('send_order.send_state_form_action_window', False)
+    #     self.ensure_one()
+    #     sale_order = self.sale_order
+    #     document_id = self.id 
+    #     fecha_hoy = time.localtime()
+    #     fecha_formateada = time.strftime('%Y-%m-%d', fecha_hoy)
+    #     print(fecha_formateada)
+    #     if sale_order:
+    #         customer_email = sale_order.partner_id.email  
+    #         if not customer_email:
+    #             print("No se encontró el email del cliente en la orden de venta.") 
+    #         sale_order.write({'show_send_order_button': True})
+    #         sale_order.action_confirm()
+    #         order = self.env['send.order'].browse(self.id)
+    #     if order.exists():  
+    #         if hasattr(order, 'value_state'): 
+    #             try:
+    #                 order.value_state()  
+    #                 print("Send Order encontrado y value_state ejecutado:", order)
+    #             except Exception as e:
+    #                 print(f"Error al ejecutar value_state: {e}")
+    #         else:
+    #             print("Método value_state no encontrado en el objeto send.order.")
+    #     else:
+    #         if sale_order:
+    #             customer_name = sale_order.partner_id.display_name
+    #             customer_email = sale_order.partner_id.email  
+    #             product_id = sale_order.order_line[0].product_id.id  
+    #             invoice_number = sale_order.name
+    #             shipping_location = sale_order.warehouse_id.name
+    #             ship_date = fecha_formateada
+    #             creation_log = sale_order.create_date
+    #             due_date = self.sale_order.validity_date
+    #             ship_to = self. sale_order.partner_id.contact_address
           
                 
-                new_order = self.env['send.order'].create({
-                    'customer_name': customer_name, 
-                    'customer_email': customer_email,  
-                    'product_id': product_id,
-                    'invoice_number': invoice_number,
-                    'shipping_location': shipping_location,
-                    'ship_date': ship_date,
-                    'creation_log': creation_log,
-                    'due_date': due_date,
-                    'ship_to': ship_to,
-                    'sale_order': self.sale_order.id
+    #             new_order = self.env['send.order'].create({
+    #                 'customer_name': customer_name, 
+    #                 'customer_email': customer_email,  
+    #                 'product_id': product_id,
+    #                 'invoice_number': invoice_number,
+    #                 'shipping_location': shipping_location,
+    #                 'ship_date': ship_date,
+    #                 'creation_log': creation_log,
+    #                 'due_date': due_date,
+    #                 'ship_to': ship_to,
+    #                 'sale_order': self.sale_order.id
                
-                })
-                print("Nuevo Send Order creado:", new_order)
+    #             })
+    #             print("Nuevo Send Order creado:", new_order)
 
                
-                try:
-                    if hasattr(new_order, 'value_state'):
-                        new_order.value_state()
-                        print("Nuevo Send Order ejecutando value_state:", new_order)
-                except Exception as e:
-                    print(f"Error al ejecutar value_state en el nuevo orden: {e}")
-        return {
-            'name': 'Send Order Form',
-            'type': 'ir.actions.act_window',
-            'res_model': 'send.order',
-            'view_mode': 'form',
-            'view_id': send_state_form_action_window.view_id.id if send_state_form_action_window else False,
-            'flags': {'action_buttons': True},
-            'context': {
-                'default_document_id': document_id,
-                'default_sale_order_id': sale_order.id if sale_order else False
-            }
-        }
-
-
-    
+    #             try:
+    #                 if hasattr(new_order, 'value_state'):
+    #                     new_order.value_state()
+    #                     print("Nuevo Send Order ejecutando value_state:", new_order)
+    #             except Exception as e:
+    #                 print(f"Error al ejecutar value_state en el nuevo orden: {e}")
+    #     return {
+    #         'name': 'Send Order Form',
+    #         'type': 'ir.actions.act_window',
+    #         'res_model': 'send.order',
+    #         'view_mode': 'form',
+    #         'view_id': send_state_form_action_window.view_id.id if send_state_form_action_window else False,
+    #         'flags': {'action_buttons': True},
+    #         'context': {
+    #             'default_document_id': document_id,
+    #             'default_sale_order_id': sale_order.id if sale_order else False
+    #         }
+    #     }
+    #endregion 
     def transform_to_lbs(self, kg):
         lb = int(float(kg) * 2.205)
         shipping_text = str(kg)+"KG ("+str(lb)+"LB)"
@@ -214,7 +216,7 @@ class LogisticsLogDocument(models.Model):
     def format_gvwr(self, product):
         lb = product.gvwr_related.weight_lb
         kg = product.gvwr_related.weight_kg
-        name = product.display_name
+        name = product.default_code
         return {
             "gvwr": str(kg)+" KG ("+str(lb)+" LBS)",
             "model": name
@@ -224,9 +226,8 @@ class LogisticsLogDocument(models.Model):
         mo_orders = []
         manufacturing_order_list = self.env['mrp.production'].search([])
         for order in manufacturing_order_list:
-            if order.origin != False and order.origin == self.sale_order.name:
+            if order.origin and order.origin == self.sale_order.name:
                 mo_orders.append(order)
-
         for mo_order in mo_orders:
             mo_date = mo_order.date_planned_start
             product_vin = mo_order.vin_dispayed
@@ -234,24 +235,28 @@ class LogisticsLogDocument(models.Model):
             dateAndYear = self.format_date(str(mo_date))
             bodyType = self.format_body_type(product_body_type)
             productInfo = self.format_gvwr(mo_order.product_id)
-            invoice_name = self.invoice.display_name
             weight = self.weight
-            
+            dry_weight =mo_order.product_tmpl_id.dry_weight 
+            invoice = self.sale_order.invoice_ids[0]
+            invoice_name = invoice.display_name
             list_of_data.append({
                 "date": dateAndYear["date"],
-                "vin":product_vin,
+                "vin": product_vin,
                 "body_type": bodyType,
                 "gvwr": productInfo["gvwr"],
-                "invoice_number": invoice_name,
+                "invoice_number": invoice_name,  
                 "year": dateAndYear["year"],
                 "shipping_weight": weight,
+                "dry_weight": dry_weight,
                 "model_name": productInfo["model"],
                 "last_data": False
             })
-        
-        list_of_data[len(list_of_data)-1]["last_data"] = True
+        if list_of_data:
+            list_of_data[-1]["last_data"] = True
+
         return list_of_data
-    
+
+    # region
     # def print_packing(self):
     #     current_state = self.state
     #     if current_state == 'Packing': 
@@ -268,8 +273,8 @@ class LogisticsLogDocument(models.Model):
     #                     "comentarios": self.comentarios,
     #                     "tramitador": self.tramitador
     #                 }) 
-               
-
+    # endregion        
+    #imprime cada documento por separado
     def print_action(self):
         current_state = self.state
         if current_state == 'Packing':
@@ -283,10 +288,12 @@ class LogisticsLogDocument(models.Model):
                         "packing_truck": self.packing_truck,
                         "packing_plates": self.packing_plates,
                         "packing_trailer": self.packing_trailer,
+                        "packing_plates_trailer": self.packing_plates_trailer,
                         "comentarios": self.comentarios,
                         "tramitador": self.tramitador
                     })
-        
+    
+        # region hello
         # elif current_state == 'Packing Finanzas':
             # if self.sale_order:
             #     for partner in self.sale_order.partner_id:
@@ -405,10 +412,10 @@ class LogisticsLogDocument(models.Model):
             # 'data': data,
             # 'auto_data': auto_data,
             # })
-        
+        # endregion
         elif current_state == 'Sales Orders':
             return self.env.ref('logistics_document_packages.report_log_document_sale_order').report_action(self)
-        
+        #mso
         elif current_state == 'MSO':
             fullData = []
             if self.sale_order:
@@ -421,22 +428,19 @@ class LogisticsLogDocument(models.Model):
                         selected_count += 1
                         product = mso_data.product
                         if product:
-                            weight_info = self.env['weight.info'].search([('ref_trailer', '=', product.id)])
-                            for weight in weight_info:
-                                trailers_weight_details = weight.weight
-                                selected_products.append({
-                                    'weight': weight.weight
-                                })
+                            weight_info = product.dry_weight
+                            trailers_weight_details = weight_info
+                            selected_products.append({
+                                    'weight': weight_info
+                            })
                         
-                       
                 if selected_count > 1:
                     fullData = []
                     for data in self.get_data():  
                         for msodata in self.mso_dictionary:
                             if msodata.vin_text == data['vin']:
-                                weight_info = self.env['weight.info'].search([('ref_trailer', '=', msodata.product.id)])
                                 counter = 0
-                                data["shipping_weight"] = weight_info.weight
+                                data["shipping_weight"] = product.dry_weight
                                 counter+= 1
                                 fullData.append(data)
                     return self.env.ref('logistics_document_packages.report_all_mso_action').report_action(self, data={
@@ -446,20 +450,6 @@ class LogisticsLogDocument(models.Model):
                     })
                 else:
                     fullData = []
-                    if self.sale_order:
-                        sale_order = self.sale_order
-                        trailers_weight_details = {}
-                        selected_products = []
-                        for mso_data in self.mso_dictionary:
-                            if mso_data.checkbox == True:
-                                product = mso_data.product
-                                if product:
-                                    weight_info = self.env['weight.info'].search([('ref_trailer', '=', product.id)])
-                                    for weight in weight_info:
-                                        trailers_weight_details = weight.weight
-                                        selected_products.append({
-                                            'weight': weight.weight
-                                        })
                     if selected_products:
                         fullData = selected_products
                         for product in selected_products:
@@ -472,7 +462,7 @@ class LogisticsLogDocument(models.Model):
                     'trailers_weight_details': trailers_weight_details,
                     'selected_products': selected_products,
                     })
-
+        #factura   
         elif current_state == 'Factura':
             sale_order = self.env['sale.order'].browse(self.sale_order.id)
             if sale_order.invoice_ids:
@@ -493,7 +483,7 @@ class LogisticsLogDocument(models.Model):
                  "sale_order_id": self.sale_order.id,
             })
             
-        
+        #HS7
         elif current_state == 'HS7':
             manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
             reports = [] 
@@ -503,24 +493,23 @@ class LogisticsLogDocument(models.Model):
                         'report_ref': 'logistics_document_packages.report_decla_action',
                         'data': {
                             "sale_order_id": self.sale_order.id,
-                            "product": order.product_id.name,
+                            "product": order.product_id.trailer_code,
                             "vin": order.vin_dispayed,
                         }
                     })
-        
- 
+            
+        #convertir los reportes a formato pdf
         merger = PdfFileMerger()
         for report_data in reports:
             report_ref = self.env.ref(report_data['report_ref'])
             if not report_ref:
                 raise UserError(f"Report reference {report_data['report_ref']} not found.")
             if report_data['data'] != None:
-                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'],data=report_data['data'])
-
+                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'],data=report_data['data']) 
             if pdf_content:
                 pdf_io = BytesIO(pdf_content)
                 merger.append(pdf_io)  
-    
+
         output = BytesIO()
         merger.write(output)
         merger.close()
@@ -531,21 +520,66 @@ class LogisticsLogDocument(models.Model):
             'name': 'Logistics_document_packages.pdf',
             'datas': data,
             'type': 'binary',
+            'res_model': self._name,
             'mimetype': 'application/pdf',
         })
         return {
             'type': 'ir.actions.act_url',
-            'url': f'web/content/{attachment.id}?download=true',
+            'url': f'/web/content/{attachment.id}?download=true',
             'target': 'self',
         }
-        
 
+  
+    #ver historial de descargas
+    def action_show_downloads(self):
+        return {
+            'name': 'Archivos Descargados',
+            'type': 'ir.actions.act_window',
+            'res_model': 'ir.attachment',
+            'view_mode': 'tree,form',
+            'domain': [('id', 'in', self.downloaded_attachment_ids.ids)],
+            'target': 'current',
+            'context': {'create': False}, 
+        }
+
+    def action_download(self):
+        self.ensure_one()
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'Documento_{self.name or self.id}.pdf',
+            'type': 'binary',
+            'datas': self.file, 
+            'res_model': 'logistics.log_document',
+            'res_id': self.id,
+            'mimetype': 'application/pdf'
+        })
+
+        self.write({
+            'downloaded_attachment_ids': [(4, attachment.id)],
+        })
+
+        self.env['logistics.download.log'].create({
+            'document_id': self.id,
+            'download_time': fields.Datetime.now(),
+            'user_id': self.env.user.id,
+            'attachment_id': attachment.id
+        })
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
+        }
+       
+        
+    # Imprime todos los reportes en un solo pdf
     def action_print_all_documents(self):
-        email = self.env.context.get('email', False)  
-        if not email:
-            raise UserError('Debe proporcionar un correo electrónico para enviar los documentos.')
+        self.ensure_one()
+        if not self.email:
+            raise UserError("Debe ingresar un correo electrónico.") 
         merger = PdfFileMerger()
         reports = []
+        #Generacion del documento de paking
         reports.append({
                 'report_ref': 'logistics_document_packages.report_packing_action',
                 'data': {
@@ -556,19 +590,20 @@ class LogisticsLogDocument(models.Model):
                     "packing_truck": self.packing_truck,
                     "packing_plates": self.packing_plates,
                     "packing_trailer": self.packing_trailer,
+                    "packing_plates_trailer": self.packing_plates_trailer,
                     "comentarios": self.comentarios,
                     "tramitador": self.tramitador
                 }
                 
             })
-      
+        #Generacion ddel documento de HS7
         reports.append({
                 'report_ref': 'logistics_document_packages.report_HS7_action',
                 'data':{
                     "sale_order_id": self.sale_order.id,
                 }
             })
-        
+        #Factura
         if self.sale_order.invoice_ids:
             factura = self.sale_order.invoice_ids[0]
             if factura:
@@ -578,17 +613,17 @@ class LogisticsLogDocument(models.Model):
                     'docids':factura.id,
                     'data':None
                 })
-
-        fullData =[]
+        #MSO
+        fullData = []
         if self.sale_order:
             for data in self.get_data():
                 for msodata in self.mso_dictionary:
-                    if msodata.vin_text ==  data['vin']:
-                        weight_info = self.env['weight.info'].search([('ref_trailer', '=', msodata.product.id)])
-                        counter = 0
-                        data["shipping_weight"] = weight_info.weight
-                        counter+= 1
-                        fullData.append(data)
+                    if msodata.vin_text == data['vin']:
+                        product_info = self.env['product.template'].search([('dry_weight', '=', msodata.product.id)], limit=1)
+                        if product_info:
+                            data["dry_weight"] = product_info.dry_weight 
+                        fullData.append(data.copy())
+                        break 
             reports.append({
                 'report_ref': 'logistics_document_packages.report_all_mso_action',
                 'data': {
@@ -597,8 +632,7 @@ class LogisticsLogDocument(models.Model):
                 }
             })
 
-
-
+        #declaracion
         fecha_hoy = time.localtime()
         fecha_formateada = time.strftime('%d-%m-%Y', fecha_hoy)
         manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
@@ -608,11 +642,12 @@ class LogisticsLogDocument(models.Model):
                 'report_ref': 'logistics_document_packages.report_decla_action',
                 'data': {
                     "sale_order_id": self.sale_order.id,
-                    "product": order.product_id.name,
+                    "product": order.product_id.trailer_code,
                     "vin": order.vin_dispayed,
                     "date": fecha_formateada,
                 }
             })
+                
                 
 
         print(reports)
@@ -630,46 +665,46 @@ class LogisticsLogDocument(models.Model):
                 pdf_io = BytesIO(pdf_content)
                 merger.append(pdf_io)
 
-        
-            output = BytesIO()
-            merger.write(output)
-            merger.close()
-            output.seek(0)
-            data = base64.b64encode(output.read())
-            output.close()
-            attachment = self.env['ir.attachment'].create({
-                'name': 'Logistics_document_packages.pdf',
-                'datas': data,
-                'type': 'binary',
-                'mimetype': 'application/pdf',
-            })
+        #los convierte a pdf y los envia a un correo especifico
+        output = BytesIO()
+        merger.write(output)
+        merger.close()
+        output.seek(0)
+        data = base64.b64encode(output.read())
+        output.close()
+        self.downloaded_attachment_ids = self.env['ir.attachment'].create({
+            'name': 'Logistics_document_packages.pdf',
+            'datas': data,
+            'type': 'binary',
+            'mimetype': 'application/pdf',
+        })
+        self.sale_order.downloaded_attachment_ids = self.downloaded_attachment_ids
+        self.sale_order.logistics_data = self
+        attachment = self.downloaded_attachment_ids
+        # self.write({
+        #     'downloaded_attachment_ids': [(4, attachment.id)],
+        # })
+        mail_values = {
+        'subject': f'Documentos - Pedido {self.sale_order.name}',
+        'body_html': f'''
+            <p>Estimado cliente,</p>
+            <p>Adjunto encontrará los documentos del pedido {self.sale_order.name}.</p>
+        ''',
+        'email_to': self.email,
+        'attachment_ids': [(4, attachment.id)],
+        }
+        self.env['mail.mail'].create(mail_values).send()
 
-        
-            mail_values = {
-                'subject': f'Documentos de Logística - Pedido {self.sale_order.name}',
-                'body_html': '''
-                    <p>Estimado cliente,</p>
-                    <p>Adjunto encontrará todos los documentos relacionados con su pedido.</p>
-                ''',
-                'email_to': email,
-                'attachment_ids': [(4, attachment.id)],
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Éxito',
+                'message': f'Documentos enviados a {self.email}',
+                'type': 'success',
             }
-        
-            self.env['mail.mail'].create(mail_values).send()
-        
-            return {
-                "email": email,
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Documentos enviados',
-                    'message': f"Todos los documentos han sido enviados a {email}",
-                    'sticky': False,
-                    'type': 'success',
-                }
-            }
-
-    
+        }
+    #campos mso 
     def mso_state(self):
         if self.mso_dictionary != False:
             aux_array = []

@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_inherit_workcenter_kanban" model="ir.ui.view">
+            <field name="name">view.inherit.workcenter.kanban</field>
+            <field name="model">mrp.workcenter</field>
+            <field name="inherit_id" ref="mrp.mrp_workcenter_kanban"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//kanban[1]/templates[1]/t[1]/div[1]/div[1]/div[1]/span[1]/field[@name='name']" position="after">
+                     <div>
+                        <span style="display: inline-block; font-size: 11px;">
+                            Average orders per day: <field name="mediamm"/>
+                        </span>
+                     </div>
+                     <div style="text-align: right;">
+                        <span style="display: inline-block; font-size: 11px;">
+                            Last planned date: <field name="lstday"/>
+                        </span>
+                     </div>
+                 </xpath>
+             </field>
+        </record>
+    </data>
+</odoo>

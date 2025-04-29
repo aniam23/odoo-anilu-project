@@ -3,9 +3,6 @@ access_main_view,main.view,model_main_view,,1,1,1,1
 access_logistics_log_document,logistics.log_document,model_logistics_log_document,,1,1,1,1
 access_freight_partner,freight.partner,model_freight_partner,,1,1,1,1
 access_wheel_nut,wheel.nut,model_wheel_nut,,1,1,1,1
-access_weight_info,weight.info,model_weight_info,,1,1,1,1
-access_model_hs7,model.hs7,model_model_hs7,,1,1,1,1
-access_send_order,send.order,model_send_order,,1,1,1,1
 access_mso_data,mso.data,model_mso_data,,1,1,1,1
 access_hs7_dictionary,hs7.dictionary,model_hs7_dictionary,,1,1,1,1
 

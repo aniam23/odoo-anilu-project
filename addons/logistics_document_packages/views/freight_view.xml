@@ -40,10 +40,10 @@
           <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Freight Options" id="options_freight" parent="logistics_document_packages_menu_root"/>
+        <menuitem name="Transporte" id="options_freight" parent="logistics_document_packages_menu_root"/>
 
-        <menuitem name="Add freight" id="new_freight" parent="options_freight" action="freight_form_action_window"/>
+        <menuitem name="Agregar Flete" id="new_freight" parent="options_freight" action="freight_form_action_window"/>
 
-        <menuitem name="freight registry" id="freight_registry" parent="options_freight" action="frieght_log_action_window"/>
+        <menuitem name="Ver registro" id="freight_registry" parent="options_freight" action="frieght_log_action_window"/>
     </data>
 </odoo>

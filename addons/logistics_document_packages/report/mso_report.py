@@ -6,7 +6,7 @@ class MSOreport(models.AbstractModel):
     _description = 'Print report MSO'
 
     def _get_report_values(self, docids, data=None):
-        
+        print(data)
         return {
            
             'data': data,

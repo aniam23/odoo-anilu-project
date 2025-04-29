@@ -15,7 +15,6 @@ class SendOrder(models.Model):
     transit = fields.Boolean("IN TRANSIT")
     proof = fields.Boolean("PROOF OF DELIVERY")
     delivered = fields.Boolean("DELIVERED TO CUSTOMER")
-    
     state = fields.Selection([
         ('UPCOMING UPLOADS', 'UPCOMING UPLOADS'),
         ('LOADS RTS DEALER', 'LOADS RTS DEALER'),
@@ -24,8 +23,6 @@ class SendOrder(models.Model):
         ('PROOF OF DELIVERY', 'PROOF OF DELIVERY'),
         ('DELIVERED TO CUSTOMER', 'DELIVERED TO CUSTOMER'),
     ], string='State', default='UPCOMING UPLOADS')
-
- 
 
     load = fields.Char('Load')
     name = fields.Char(string='Name')

@@ -9,7 +9,12 @@
             <field name="arch" type="xml">
 		        <xpath expr="//field[@name='gvwr_related']" position="replace">
                     <field name="gvwr_child"/>
+                 
 		        </xpath>
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="trailer_code" attrs="{'invisible':[('is_trailer','==',False)]}"/>
+                    <field name="trailer_name" attrs="{'invisible':[('is_trailer','==',False)]}"/>
+                </xpath>
             </field>
         </record>
   </data>
