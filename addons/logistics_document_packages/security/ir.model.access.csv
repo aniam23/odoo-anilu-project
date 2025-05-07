@@ -4,7 +4,6 @@ access_logistics_log_document,logistics.log_document,model_logistics_log_documen
 access_freight_partner,freight.partner,model_freight_partner,,1,1,1,1
 access_wheel_nut,wheel.nut,model_wheel_nut,,1,1,1,1
 access_mso_data,mso.data,model_mso_data,,1,1,1,1
-access_hs7_dictionary,hs7.dictionary,model_hs7_dictionary,,1,1,1,1
 
 
 

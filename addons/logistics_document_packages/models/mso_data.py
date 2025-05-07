@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class MsoData(models.Model):
     _name = 'mso.data'
     _description = 'add values mso data'
-    
+    #obtener campos para generar mso correctamente
     name = fields.Char(string='Name')
     log_document_id = fields.Many2one('logistics.log_document', string='Log Document')
     vins_print = fields.Many2many('print.vins', string='Print Vins')

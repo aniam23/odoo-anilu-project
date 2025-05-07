@@ -14,7 +14,6 @@
     'sequence': 3,
     'category': 'All',
     'version': '1.0',
-
     'depends': ['sale','vin_generator'],
     'data': [
         'security/ir.model.access.csv',

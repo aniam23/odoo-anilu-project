@@ -15,11 +15,26 @@
                         <group>
                             <field name="name" readonly="1"/>
                             <field name="model_trailer"/>
+                            <field name="name_trailer"/>
                             <field name="wheel"/>
                             <field name="dry_weight"/>
+                            <field name="gvwr_related" />
+                            <field name="gawr_related"/>
+                            <field name="tire_typ" readonly="1"/>
+                            <field name="model_year" readonly="1"/>
+                            <field name="axles" readonly="1"/>
+                            <field name="tongue_type" readonly="1"/>
+                            <field name="length" readonly="1"/>
                             <field name="vin_registry"/>
                             <button name="print_manual_vins" string="Print" type="object" class="btn-primary"/>
+                            <button 
+                                name="button_assign_trailer_data" 
+                                string="Buscar Datos" 
+                                type="object" 
+                                class="btn-primary" 
+                            />
                         </group>
+
                     </sheet>
                 </form>
             </field>

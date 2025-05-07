@@ -27,6 +27,7 @@
         'views/manual_print_view.xml',
         'views/gawr_related_view.xml',
         'views/print_vin_view.xml',
+        'views/printer_conf_view.xml',
     ],
     
     'installable': True,

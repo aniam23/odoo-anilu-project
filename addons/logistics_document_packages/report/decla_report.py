@@ -10,20 +10,10 @@ class DeclaReport(models.AbstractModel):
             return {'error': 'Sale order not found'}
         fecha_hoy = time.localtime()
         fecha_formateada = time.strftime('%d-%m-%Y')
-        # trailers_hs7_list = []  
-        # for line in sale_order.order_line:
-        #     product = line.product_id
-        #     model_info = self.env['model.hs7'].search([('ref_trailer', '=', product.id)], limit=1)
-        #     if model_info:
-        #         trailers_hs7_list.append(model_info.model)  
-        # if trailers_hs7_list:
         auto_data = {
                 'date2': fecha_formateada,
                 'id': sale_order.id,
             }
-            # for trailer in trailers_hs7_list:
-            #     print(trailer)  
-       
         return {
             'auto_data': auto_data,
             'doc_model': 'logistics.log_document',

@@ -57,12 +57,20 @@ class LogisticsLogDocument(models.Model):
     )
 
     def _valid_field_parameter(self, field, name):
+        """
+        Este método sobreescribe la función base para autorizar el uso del parámetro 'tracking'
+        en cualquier campo del modelo. Otros parámetros personalizados deben ser validados
+        por la implementación padre.
+        bool: True si el parámetro es 'tracking', de lo contrario delega al padre
+        """
         if name == 'tracking':
             return True
         return super(LogisticsLogDocument, self)._valid_field_parameter(field, name)
-    
     @api.model_create_multi
     def create(self, vals):
+        """
+        Asigna a cada documento creado un id unico para identificarlo mas facilmente
+        """
         if 'name' not in vals[0]:
             unique_name = f"Document_{random.randint(1, 9999)}"
             vals[0]['name'] = unique_name  
@@ -70,10 +78,13 @@ class LogisticsLogDocument(models.Model):
         record.setDate()
         return record
         
-    def _compute_send_button_visible(self):
-        for record in self:
-            my_model_records = self.env['my.model'].search([('sale_order_id', '=', record.id)])
-            record.send_button_visible = bool(my_model_records)
+    # def _compute_send_button_visible(self):
+    #     """
+    #     Asigna a cada documento creado un id unico para identificarlo mas facilmente
+    #     """
+    #     for record in self:
+    #         my_model_records = self.env['my.model'].search([('sale_order_id', '=', record.id)])
+    #         record.send_button_visible = bool(my_model_records)
 
     def setDate(self):
         for record in self:
@@ -81,18 +92,26 @@ class LogisticsLogDocument(models.Model):
 
     @api.onchange('sale_order')
     def _onchange_sale_order(self):
-        self.mso_state()
+        """Verifica y actualiza el estado al seleccionar una orden de venta.
+         y despues realiza las siguientes verificaciones:
+        1. Comprueba que la factura asociada a la orden de venta seleccionada  tengan el título generado.
+        2. Verifica que exista  una orden de producción relacionada.
+        3. Si todo es correcto, transiciona al estado 'Packing'
+        """
+        self.mso_state() 
         if self.sale_order:
             for invoice in self.sale_order.invoice_ids:
-               if not invoice.print_button_visible:
+                if not invoice.print_button_visible:
                     raise UserError(
-                        f"La factura asociada con la orden de venta ({self.sale_order.name}) no tiene el título generado. No puede seleccionarse esta orden de venta."
+                        f"La factura {invoice.name} de la orden {self.sale_order.name} no tiene el título generado."
                     )
-            else:
-                manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
+            manufacturing_orders = self.env['mrp.production'].search([
+                ('origin', '=', self.sale_order.name)
+            ])
             if not manufacturing_orders:
-                    raise UserError(f"La factura asociada con la orden de venta ({self.sale_order.name}) no tiene una orden de produccion asociada.")
-            
+                raise UserError(
+                    f"La orden de venta {self.sale_order.name} no tiene órdenes de producción asociadas."
+                )
             self.state = 'Packing'
             
 
@@ -208,12 +227,20 @@ class LogisticsLogDocument(models.Model):
         }
     
     def format_body_type(self,bodyTypeString):
+        """
+        Esta función funciona como un  traductor automático para los tipos de carrocerías 
+        de los  vehículos. Toma
+        los nombres técnicos que usan los sistemas internos y los convierte en nombres mas legibles.
+        """
         if "_" in bodyTypeString:
             return "ROLL OFF DUMP"
         else:
             return bodyTypeString
         
     def format_gvwr(self, product):
+        """
+        formato para convertir los gvwr de libras a kg
+        """
         lb = product.gvwr_related.weight_lb
         kg = product.gvwr_related.weight_kg
         name = product.default_code
@@ -222,10 +249,15 @@ class LogisticsLogDocument(models.Model):
             "model": name
         }
     def get_data(self):
+        """
+        Esta función recolecta y organiza información clave sobre órdenes de producción relacionadas con una venta específica
+        Su propósito principal es preparar los datos para su uso en documentos o reportes.
+        """
         list_of_data = []
         mo_orders = []
         manufacturing_order_list = self.env['mrp.production'].search([])
         for order in manufacturing_order_list:
+            #despues de la busqueda de la orden de produccion, busca el origen relacionado con el nombre de la orden de venta.
             if order.origin and order.origin == self.sale_order.name:
                 mo_orders.append(order)
         for mo_order in mo_orders:
@@ -251,9 +283,9 @@ class LogisticsLogDocument(models.Model):
                 "model_name": productInfo["model"],
                 "last_data": False
             })
+        #Devuelve la lista completa de datos formateados
         if list_of_data:
             list_of_data[-1]["last_data"] = True
-
         return list_of_data
 
     # region
@@ -276,6 +308,9 @@ class LogisticsLogDocument(models.Model):
     # endregion        
     #imprime cada documento por separado
     def print_action(self):
+        """
+        almacena los valores manuales que el usurio ingrese y posteriormente genera el reporte packing
+        """
         current_state = self.state
         if current_state == 'Packing':
             if self.sale_order:
@@ -414,16 +449,29 @@ class LogisticsLogDocument(models.Model):
             # })
         # endregion
         elif current_state == 'Sales Orders':
+            #Verifica si el estado actual (current_state) es igual a 'Sales Orders
             return self.env.ref('logistics_document_packages.report_log_document_sale_order').report_action(self)
         #mso
         elif current_state == 'MSO':
+          
+            # Esta sección del código maneja 
+            # la generación de reportes para documentos MSO , 
+            # con dos flujos distintos según la 
+            # cantidad de productos seleccionados. 
+           
             fullData = []
             if self.sale_order:
+                #orden de venta seleccionada 
                 sale_order = self.sale_order
+                #almacena los pesos de cada producto de la sale order
                 trailers_weight_details = {}
+                #almacena todos los productos de la orden de venta
                 selected_products = []
+                #contador para productos
                 selected_count = 0  
+                #se ejecuta solo cuando se selecciona un producto
                 for mso_data in self.mso_dictionary:
+                    #contiene los productos disponibles para seleccion
                     if mso_data.checkbox == True:
                         selected_count += 1
                         product = mso_data.product
@@ -433,29 +481,32 @@ class LogisticsLogDocument(models.Model):
                             selected_products.append({
                                     'weight': weight_info
                             })
-                        
+                #se ejecuta cuando se selecciona mas de un producto       
                 if selected_count > 1:
-                    fullData = []
-                    for data in self.get_data():  
-                        for msodata in self.mso_dictionary:
-                            if msodata.vin_text == data['vin']:
-                                counter = 0
-                                data["shipping_weight"] = product.dry_weight
+                    fullData = [] #almacena todos los datos estructurados para el reporte
+                    for data in self.get_data(): #manda llamar los campos declarados en get data  
+                        for msodata in self.mso_dictionary: # busca los productos dentro del modelo mso dictionary
+                            if msodata.vin_text == data['vin']: # obtiene el vin
+                                counter = 0 # contador para el numero de productos seleccionados
+                                data["shipping_weight"] = product.dry_weight #obtiene el peso del producto 
                                 counter+= 1
-                                fullData.append(data)
+                                fullData.append(data)#genera el reporte con los datos acumulados 
                     return self.env.ref('logistics_document_packages.report_all_mso_action').report_action(self, data={
                         'id': sale_order.id,
                         'full_data': fullData,
                         'selected_products': selected_products,
                     })
+                #si solo selecciona un producto
                 else:
                     fullData = []
                     if selected_products:
                         fullData = selected_products
                         for product in selected_products:
                             print(f"Producto seleccionado: Peso: {product['weight']}")
+                    #cuando no selecciona ningun producto
                     else:
-                        raise UserError("Por favor, seleccione al menos un producto para imprimir.")        
+                        raise UserError("Por favor, seleccione al menos un producto para imprimir.")  
+                    #manda llamar la accion relacionada al xml de mso para generar los reportes en pdf      
                     return self.env.ref('logistics_document_packages.report_mso_action').report_action(self, data={
                     'id': sale_order.id,
                     'full_data': self.get_data(), 
@@ -464,6 +515,7 @@ class LogisticsLogDocument(models.Model):
                     })
         #factura   
         elif current_state == 'Factura':
+            # Obtiene la factura asociada a la orden de venta y la imprime. 
             sale_order = self.env['sale.order'].browse(self.sale_order.id)
             if sale_order.invoice_ids:
                 factura = sale_order.invoice_ids[0]
@@ -479,12 +531,20 @@ class LogisticsLogDocument(models.Model):
         
 
         elif current_state == 'Declaracion':
-             return self.env.ref('logistics_document_packages.report_HS7_action').report_action(self,data={
+            
+            # Manda llamar la accion que 
+            # ejecuta el xml correspondiente para generar el reporte de la declaracion 
+           
+            return self.env.ref('logistics_document_packages.report_HS7_action').report_action(self,data={
                  "sale_order_id": self.sale_order.id,
             })
             
         #HS7
         elif current_state == 'HS7':
+            
+            # Busca la orden de produccion relacionada a la orden de venta que 
+            # se haya seleccionado para despues obtener el producto y el vin
+           
             manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
             reports = [] 
             for order in manufacturing_orders:
@@ -498,88 +558,115 @@ class LogisticsLogDocument(models.Model):
                         }
                     })
             
-        #convertir los reportes a formato pdf
+        
+        # combina múltiples archivos PDF en uno solo
         merger = PdfFileMerger()
+        # Itera sobre cada reporte definido en la lista 'reports'
         for report_data in reports:
+            # Obtiene la referencia al reporte en Odoo usando el XML ID
             report_ref = self.env.ref(report_data['report_ref'])
+            # Valida si el reporte existe, de lo contrario lanza error
             if not report_ref:
                 raise UserError(f"Report reference {report_data['report_ref']} not found.")
+            # Verifica si el reporte tiene datos asociados
             if report_data['data'] != None:
-                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'],data=report_data['data']) 
+                # Renderiza el reporte a PDF con los datos proporcionados
+                # _render_qweb_pdf devuelve el contenido PDF 
+                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(
+                    report_data['report_ref'],
+                    data=report_data['data']
+                )
+            # Si se generó contenido PDF correctamente crea un objeto BytesIO para manejar el contenido PDF en memoria
             if pdf_content:
                 pdf_io = BytesIO(pdf_content)
-                merger.append(pdf_io)  
-
+                merger.append(pdf_io)
+        # Crea un nuevo buffer de bytes para el PDF combinado final
         output = BytesIO()
+        # Escribe todos los PDFs combinados en el buffer de salida
         merger.write(output)
+        # Cierra el merger para liberar recursos
         merger.close()
+        # Rebobina el buffer al inicio para lectura
         output.seek(0)
+        # Codifica el contenido PDF en base64 para almacenamiento
         data = base64.b64encode(output.read())
+        # Cierra el buffer de salida
         output.close()
+        # Crea un registro de adjunto en Odoo con el PDF combinado
         attachment = self.env['ir.attachment'].create({
-            'name': 'Logistics_document_packages.pdf',
-            'datas': data,
-            'type': 'binary',
-            'res_model': self._name,
-            'mimetype': 'application/pdf',
+            'name': 'Logistics_document_packages.pdf',  # Nombre del archivo
+            'datas': data,  # Contenido del PDF en base64
+            'type': 'binary',  # Tipo de archivo
+            'res_model': self._name,  # Modelo al que se asocia
+            'mimetype': 'application/pdf',  # Tipo MIME
         })
+
+        # Retorna una acción para descargar el archivo PDF
         return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/{attachment.id}?download=true',
-            'target': 'self',
+            'type': 'ir.actions.act_url',  # Tipo de acción: URL
+            'url': f'/web/content/{attachment.id}?download=true',  # URL de descarga
+            'target': 'self',  # Abrir en la misma ventana
         }
 
   
-    #ver historial de descargas
-    def action_show_downloads(self):
-        return {
-            'name': 'Archivos Descargados',
-            'type': 'ir.actions.act_window',
-            'res_model': 'ir.attachment',
-            'view_mode': 'tree,form',
-            'domain': [('id', 'in', self.downloaded_attachment_ids.ids)],
-            'target': 'current',
-            'context': {'create': False}, 
-        }
+        # #ver historial de descargas
+        # def action_show_downloads(self):
+        #     return {
+        #         'name': 'Archivos Descargados',
+        #         'type': 'ir.actions.act_window',
+        #         'res_model': 'ir.attachment',
+        #         'view_mode': 'tree,form',
+        #         'domain': [('id', 'in', self.downloaded_attachment_ids.ids)],
+        #         'target': 'current',
+        #         'context': {'create': False}, 
+        #     }
 
+        # Define la acción para descargar un documento
     def action_download(self):
+        # Asegura que solo se trabaje con un registro (evita operaciones por lotes)
         self.ensure_one()
-
+        # Crea un registro de adjunto (attachment) en Odoo con el documento PDF
         attachment = self.env['ir.attachment'].create({
-            'name': f'Documento_{self.name or self.id}.pdf',
-            'type': 'binary',
-            'datas': self.file, 
-            'res_model': 'logistics.log_document',
-            'res_id': self.id,
-            'mimetype': 'application/pdf'
+            'name': f'Documento_{self.name or self.id}.pdf', # Nombre del archivo 
+            'type': 'binary',  # Tipo de archivo (binario)
+            'datas': self.file,  # Contenido del archivo en base64 
+            'res_model': 'logistics.log_document',  # Modelo relacionado
+            'res_id': self.id,  # ID del registro relacionado
+            'mimetype': 'application/pdf'  # Tipo (PDF)
         })
 
+        # Actualiza el documento actual para vincular el nuevo adjunto
         self.write({
             'downloaded_attachment_ids': [(4, attachment.id)],
         })
 
+        # Crea un registro de log para rastrear la descarga
         self.env['logistics.download.log'].create({
-            'document_id': self.id,
-            'download_time': fields.Datetime.now(),
-            'user_id': self.env.user.id,
-            'attachment_id': attachment.id
+            'document_id': self.id,  # ID del documento descargado
+            'download_time': fields.Datetime.now(),  # Marca temporal de la descarga
+            'user_id': self.env.user.id,  # Usuario que realizó la descarga
+            'attachment_id': attachment.id  # Referencia al adjunto creado
         })
 
+        # Retorna una acción para descargar el archivo en el navegador
         return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/{attachment.id}?download=true',
-            'target': 'self',
+            'type': 'ir.actions.act_url',  # Tipo de acción: abrir URL
+            'url': f'/web/content/{attachment.id}?download=true',  # URL de descarga del adjunto
+            'target': 'self',  # Abre en la misma pestaña/ventana
         }
-       
-        
-    # Imprime todos los reportes en un solo pdf
+    
     def action_print_all_documents(self):
+        """
+        esta funcion envia por correo electronico 
+        todos los reportes de logistica
+        adjuntos en un solo pdf
+        """
         self.ensure_one()
         if not self.email:
             raise UserError("Debe ingresar un correo electrónico.") 
         merger = PdfFileMerger()
         reports = []
-        #Generacion del documento de paking
+        #Generacion del documento de paking y registro de datos manuales en data
         reports.append({
                 'report_ref': 'logistics_document_packages.report_packing_action',
                 'data': {
@@ -596,14 +683,14 @@ class LogisticsLogDocument(models.Model):
                 }
                 
             })
-        #Generacion ddel documento de HS7
+        #Generacion del documento de HS7
         reports.append({
                 'report_ref': 'logistics_document_packages.report_HS7_action',
                 'data':{
                     "sale_order_id": self.sale_order.id,
                 }
             })
-        #Factura
+        # Busca la factura en la orden de venta seleccionada y la imprime
         if self.sale_order.invoice_ids:
             factura = self.sale_order.invoice_ids[0]
             if factura:
@@ -614,16 +701,19 @@ class LogisticsLogDocument(models.Model):
                     'data':None
                 })
         #MSO
-        fullData = []
-        if self.sale_order:
-            for data in self.get_data():
-                for msodata in self.mso_dictionary:
-                    if msodata.vin_text == data['vin']:
-                        product_info = self.env['product.template'].search([('dry_weight', '=', msodata.product.id)], limit=1)
-                        if product_info:
+        fullData = [] #almacena todos los datos estructurados para el reporte
+        if self.sale_order: #orden de venta seleccionada
+            for data in self.get_data(): # manda llamar los datos declarados en get data
+                for msodata in self.mso_dictionary: #busca los campos en el modelo mso data
+                    if msodata.vin_text == data['vin']: #obtiene el vin
+                        product_info = self.env['product.template'].search([('dry_weight', '=', msodata.product.id)], limit=1) #obtener el peso del producto
+                        if product_info: 
+                            # Agrega el peso del producto a los datos actuales
                             data["dry_weight"] = product_info.dry_weight 
+                            # Crea una COPIA del diccionario de datos y lo agrega a la lista fullData
                         fullData.append(data.copy())
                         break 
+            # Agrega un nuevo reporte a la lista de reports (reportes a generar)
             reports.append({
                 'report_ref': 'logistics_document_packages.report_all_mso_action',
                 'data': {
@@ -631,13 +721,13 @@ class LogisticsLogDocument(models.Model):
                     'full_data': fullData,
                 }
             })
-
+            
         #declaracion
-        fecha_hoy = time.localtime()
-        fecha_formateada = time.strftime('%d-%m-%Y', fecha_hoy)
-        manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
-        for order in manufacturing_orders:
-            if order.product_id and order.vin_dispayed:
+        fecha_hoy = time.localtime() #fecha actual
+        fecha_formateada = time.strftime('%d-%m-%Y', fecha_hoy) #formato de fecha dia/mes/año
+        manufacturing_orders = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)]) #busca la orden de manufactura origen en la orden de venta
+        for order in manufacturing_orders: #busca valores en la orden de manufactura
+            if order.product_id and order.vin_dispayed: #obtiene el vin del producto
                 reports.append({
                 'report_ref': 'logistics_document_packages.report_decla_action',
                 'data': {
@@ -648,23 +738,39 @@ class LogisticsLogDocument(models.Model):
                 }
             })
                 
-                
-
+        # Imprime la lista de reportes 
         print(reports)
+        # Procesa cada reporte en la lista 'reports'
         for report_data in reports:
+            # Obtiene la referencia al reporte 
             report_ref = self.env.ref(report_data['report_ref'])
+            # Valida si el reporte existe en el sistema
             if not report_ref:
-                raise UserError(f"Report reference {report_data['report_ref']} not found.")
-            if report_data['data'] != None:
-                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'],data=report_data['data'])
-            elif report_data['data'] == None and report_data['docids'] != None:
-                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'],report_data['docids'], data=None)
+                # Lanza error si no encuentra el reporte
+                raise UserError(f"No se encontró el reporte: {report_data['report_ref']}")
+            if report_data['data'] != None: #si encuentra el reporte lo renderiza
+                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(
+                    report_data['report_ref'],  
+                    data=report_data['data']   
+                )
+            elif report_data['data'] == None and report_data['docids'] != None: #verifica si el reporte tiene datos personalizados
+                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(
+                report_data['report_ref'],  #Identificador del reporte xml
+                report_data['docids'],      
+                data=None                   
+                )
             else:
-                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(report_data['report_ref'])
-            if pdf_content:
-                pdf_io = BytesIO(pdf_content)
-                merger.append(pdf_io)
+                #Genera reporte básico (sin datos ni IDs específicos)
+                pdf_content, _ = report_ref.sudo()._render_qweb_pdf(
+                    report_data['report_ref'] 
+                )
 
+            # Si se generó contenido PDF exitosamente
+            if pdf_content:
+                # Crea un archivo en memoria con el contenido PDF
+                pdf_io = BytesIO(pdf_content)
+                # Agrega el PDF al objeto 'merger' que combina múltiples PDFs
+                merger.append(pdf_io)
         #los convierte a pdf y los envia a un correo especifico
         output = BytesIO()
         merger.write(output)
@@ -684,6 +790,7 @@ class LogisticsLogDocument(models.Model):
         # self.write({
         #     'downloaded_attachment_ids': [(4, attachment.id)],
         # })
+        #contenido del correo
         mail_values = {
         'subject': f'Documentos - Pedido {self.sale_order.name}',
         'body_html': f'''
@@ -694,7 +801,7 @@ class LogisticsLogDocument(models.Model):
         'attachment_ids': [(4, attachment.id)],
         }
         self.env['mail.mail'].create(mail_values).send()
-
+        #notificacion de correo enviado
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -704,23 +811,33 @@ class LogisticsLogDocument(models.Model):
                 'type': 'success',
             }
         }
-    #campos mso 
+        # Método para actualizar el estado MSO 
     def mso_state(self):
+        # Verifica si el campo mso_dictionary está vacío 
         if self.mso_dictionary != False:
+            # Crea un array auxiliar para almacenar los nuevos registros MSO
             aux_array = []
-            production = self.env['mrp.production'].search([('origin', '=', self.sale_order.name)])
+            # Busca órdenes de producción relacionadas con la orden de venta actual
+            production = self.env['mrp.production'].search([
+                ('origin', '=', self.sale_order.name)
+            ])
+            # Itera sobre todas las órdenes de producción vinculadas a la orden de venta
             for production in self.sale_order.mrp_production_ids:
+                # Valida que existan los campos requeridos
                 if production.product_id and production.vin_relation and self.sale_order:
+                    # Crea un nuevo registro en el modelo mso.data con:
                     aux_array.append(self.env['mso.data'].create({
-                        'vin': production.vin_relation.id,
-                        'vin_text': production.vin_relation.vin,
-                        'product': production.product_id.id,
-                        'sale_order': self.sale_order.id,
-                    }).id)
+                        'vin': production.vin_relation.id,      # vin
+                        'vin_text': production.vin_relation.vin, # Número de VIN
+                        'product': production.product_id.id,     # ID del producto
+                        'sale_order': self.sale_order.id,       # ID de la orden de venta
+                    }).id)  # Guarda el ID del nuevo registro
                 else:
+                    # Lanza error si falta algún campo obligatorio
                     raise ValueError("Uno de los campos requeridos no está definido.")
-            self.mso_dictionary = aux_array
 
+            # Actualiza el campo mso_dictionary con los nuevos IDs creados
+            self.mso_dictionary = aux_array
 
             
            

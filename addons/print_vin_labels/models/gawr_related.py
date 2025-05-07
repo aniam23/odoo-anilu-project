@@ -2,9 +2,7 @@ from odoo import models, fields, api
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
     gawr_related = fields.Many2one('print.gawr', string='GAWR')
-
     dry_weight = fields.Integer(
         string="DRY WEIGHT",
         help="Peso del remolque sin carga (en kg o lbs)",
@@ -19,9 +17,6 @@ class ProductTemplate(models.Model):
         string="Tire Type",
         default="SINGLE"
     )
-
-
-
     @api.model
     def year_selection(self):
         year = 2021
@@ -33,9 +28,7 @@ class ProductTemplate(models.Model):
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
-
     gawr_child = fields.Many2one('print.gawr', string='GAWR Child')
-
     @api.model_create_multi
     def create(self, vals_list):
         products = super(ProductProduct, self).create(vals_list)

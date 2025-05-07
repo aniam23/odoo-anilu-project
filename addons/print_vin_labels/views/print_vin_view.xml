@@ -20,7 +20,6 @@
       <field name="view_mode">form</field>
     </record>
   
-   
     <menuitem id="menu_print_vin_root" name="Print VIN Labels"  />
     <menuitem id="menu_print_vin" name="Print VIN Labels" parent="menu_print_vin_root" action="action_print_vin" />
   </data>

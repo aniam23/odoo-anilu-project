@@ -9,8 +9,6 @@ class Hs7Report(models.AbstractModel):
        
         sale_order = self.env['sale.order'].search([('id', '=' ,data['sale_order_id'])],limit=100)
        
-       
-
         invoice = sale_order.invoice_ids
         
         fecha_hoy = time.localtime()
