@@ -321,12 +321,13 @@ class PrintVins(models.Model):
             "gawr_lb": gawr_lb,
             "model_string": model_string,
         }
-        return api_data
+        return api_data  
     def _get_active_printer(self):
+        
         return self.env['printer.conf'].search([('active', '=', True)], order='sequence', limit=1)
 
     def _send_to_printer_api(self, data):
-        
+
         printer = self._get_active_printer()
         if not printer:
             raise UserError("No hay impresoras activas configuradas")
