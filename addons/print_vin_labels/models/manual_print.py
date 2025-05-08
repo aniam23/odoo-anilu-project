@@ -1,196 +1,252 @@
 from odoo import models, fields, api
-from io import BytesIO
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.units import mm
-from reportlab.pdfgen import canvas
 from odoo.exceptions import UserError
-import base64
 from datetime import datetime
+import requests
+import re
 
 class ManualPrint(models.Model):
-    _name= 'print.manual'
+    _name = 'print.manual'
     _description = 'Impresión manual de datos de remolques'
-    name = fields.Char(string='Name')
-    name_trailer =fields.Char(string='NOMBRE DEL REMOLQUE')
-    model_trailer = fields.Char(string="MODELO REMOLQUE")
-    wheel = fields.Char(string="LLANTA")
-    dry_weight = fields.Float(string="PESO TOTAL (LBS)")
+    
+    # Campos del modelo
+    name = fields.Char(string='Referencia')
+    name_trailer = fields.Char(string='Nombre del Remolque')
+    model_trailer = fields.Char(string="Modelo del Remolque")
+    wheel = fields.Char(string="Llanta")
+    dry_weight = fields.Float(string="Peso Total (LBS)")
     gvwr_related = fields.Char(string="GVWR")
     gawr_related = fields.Char(string="GAWR")
-    tire_typ = fields.Char(string="Tire Type")
-    model_year = fields.Char(string="year")
-    axles = fields.Char(string="Axles")
-    tongue_type = fields.Char(string="Tongue Type")
-    length = fields.Char(string="length")
-    pdf_filename = fields.Char(string='PDF Filename')
-    vin_registry= fields.Many2one('vin_generator.vin_generator', string='vin')
-    gvwr= fields.Many2one('vin_generator.gvwr_manager', string='gvwr')
-    gawr= fields.Many2one('print.gawr', string='gawr')
-    pdf_file = fields.Binary(string='PDF File', attachment=True)
+    tire_typ = fields.Char(string="Tipo de Llanta")
+    model_year = fields.Char(string="Año")
+    axles = fields.Char(string="Ejes")
+    tongue_type = fields.Char(string="Tipo de Lengüeta")
+    length = fields.Char(string="Longitud")
+    rin_jante = fields.Char(string="Rin/Jante")
+    vin_registry = fields.Many2one('vin_generator.vin_generator', string='VIN')
+    date = fields.Date(string='Fecha', default=fields.Date.today)
+    printer_config_id = fields.Many2one(
+        'printer.conf', 
+        string='Configuración de Impresora',
+        domain="[('active', '=', True)]"
+    )
+   
     @api.model_create_multi
-    def create(self,vals):
-        print(vals)
-        vals[0]['name'] = self.env['ir.sequence'].sudo().next_by_code('manual.print.reference') or 'New'
-        self._compute_pdf_filename()
-        res = super(ManualPrint,self).create(vals)
-        return res
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('name'):
+                vals['name'] = self.env['ir.sequence'].sudo().next_by_code('manual.print.reference') or 'New'
+        return super(ManualPrint, self).create(vals_list)
+
+    def extract_numeric_value(self, value):
+        """Extrae el valor numérico de una cadena como 'GVWR-5000' o '5000 LBS'"""
+        if not value:
+            return 0.0
+        numbers = re.findall(r'[\d,\.]+', str(value))
+        if not numbers:
+            return 0.0
+        numeric_value = numbers[0].replace(',', '')
+        return float(numeric_value)
+
     def button_assign_trailer_data(self):
         """Asigna todos los datos del remolque desde product.template"""
         for record in self:
             if not record.model_trailer:
-                continue  # No hacer nada si no hay código
-            # Buscar el producto por su código
+                continue
+                
             product = self.env['product.product'].search([
                 ('default_code', '=', record.model_trailer)
             ], limit=1)
+            
             if product:
-                # Asignar nombre del producto
-                record.name_trailer = product.name
-                # Obtener la plantilla del producto
                 template = product.product_tmpl_id
-                # Asignar todos los campos desde la plantilla (versión corregida)
-                record.dry_weight = template.dry_weight or 0.0
-                record.gvwr_related = template.gvwr_related.name or ''  
-                record.gawr_related = template.gawr_related.name or ''  
-                record.tire_typ = template.tire_typ or ''
-                record.model_year = template.model_year or ''
-                record.axles = template.axles or ''
-                record.tongue_type = template.tongue_type or ''
-                record.length = template.length or ''  # Conserva la escritura original 'lenght'
-
-                # Buscar llantas en la lista de materiales (BOM)
+                record.update({
+                    'name_trailer': product.name,
+                    'dry_weight': template.dry_weight or 0.0,
+                    'gvwr_related': template.gvwr_related.name or '',
+                    'gawr_related': template.gawr_related.name or '',
+                    'tire_typ': template.tire_typ or '',
+                    'model_year': template.model_year or '',
+                    'axles': template.axles or '',
+                    'tongue_type': template.tongue_type or '',
+                    'length': template.length or '',
+                })
+                
                 bom = self.env['mrp.bom'].search([
                     ('product_tmpl_id', '=', template.id)
                 ], limit=1)
-
+                
                 if bom:
-                    # Buscar componentes que contengan "llanta" en su nombre
                     wheels = bom.bom_line_ids.filtered(
                         lambda l: 'llanta' in l.product_id.name.lower()
                     )
                     record.wheel = wheels[0].product_id.name if wheels else ''
-                else:
-                    record.wheel = ''
+
+    def _get_active_printer(self):
+        return self.env['printer.conf'].search([('active', '=', True)], order='sequence', limit=1)
+
+    def _send_to_printer_api(self, data):
+        """Envía los datos a la impresora mediante API"""
+        printer = self._get_active_printer()
+        if not printer:
+            raise UserError("No hay impresoras activas configuradas")
+
+        try:
+            response = requests.post(
+                f"http://{printer.printer_ip}:{printer.printer_port}/print",
+                json=data,
+                headers={
+                    "Authorization": f"Bearer {printer.auth_token}",
+                    "Content-Type": "application/json"
+                },
+                timeout=10
+            )
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            raise UserError(f"Error de conexión con la impresora: {str(e)}")
+
+    def _set_tire_ratings(self, specs):
+        """Asigna las especificaciones técnicas basadas en la llanta (campo wheel)"""
+        if not self.wheel:
+            return
+
+        wheel_info = self.wheel.upper()
+        rin = wheel_info
+        # 2. Extraer tipo de llanta (DUAL o SS)
+        tire_type = 'DUAL' if re.search(r'\bDUAL\b', wheel_info) else 'SS' if re.search(r'\bSS\b', wheel_info) else ''
+
+        # 3. Extraer PLY/PR (10PLY, 14PR, etc.)
+        ply_match = re.search(r'(\d+PLY|\d+PR)', wheel_info)
+        ply_pr = ply_match.group() if ply_match else None
+
+        # Mapa de especificaciones actualizado
+        ratings_map = {
+            '17.5': {
+                'DUAL': {
+                    '18PLY': ('862 KPA/125 PSI', '5675 LBS'),
+                    '18PR': ('862 KPA/125 PSI', '5675 LBS'),
+                    '14PLY': ('758 KPA/110 PSI', '4400 LBS'),
+                    '14PR': ('758 KPA/110 PSI', '4400 LBS'),
+                    '10PLY': ('550 KPA/80 PSI', '3520 LBS'),
+                    '10PR': ('550 KPA/80 PSI', '3520 LBS')
+                },
+                'SS': {
+                    '18PLY': ('862 KPA/125 PSI', '6005 LBS'),
+                    '18PR': ('862 KPA/125 PSI', '6005 LBS'),
+                    '14PLY': ('758 KPA/110 PSI', '4400 LBS'),
+                    '14PR': ('758 KPA/110 PSI', '4400 LBS')
+                },
+                '': {  # Default para 17.5 sin tipo específico
+                    '10PLY': ('550 KPA/80 PSI', '3520 LBS'),
+                    '10PR': ('550 KPA/80 PSI', '3520 LBS')
+                }
+            },
+            '16': {
+                'DUAL': {
+                    '14PLY': ('758 KPA/110 PSI', '3860 LBS'),
+                    '14PR': ('758 KPA/110 PSI', '3860 LBS'),
+                    '10PLY': ('550 KPA/80 PSI', '3080 LBS'),
+                    '10PR': ('550 KPA/80 PSI', '3080 LBS')
+                },
+                'SS': {
+                    '14PLY': ('758 KPA/110 PSI', '3860 LBS'),
+                    '14PR': ('758 KPA/110 PSI', '3860 LBS')
+                },
+                '': {  # Default para 16 sin tipo específico
+                    '14PLY': ('758 KPA/110 PSI', '3860 LBS'),
+                    '14PR': ('758 KPA/110 PSI', '3860 LBS')
+                }
+            },
+            '15': {
+                '': {
+                    '10PLY': ('550 KPA/80 PSI', '2830 LBS'),
+                    '10PR': ('550 KPA/80 PSI', '2830 LBS'),
+                    '8PLY': ('448 KPA/65 PSI', '2150 LBS'),
+                    '8PR': ('448 KPA/65 PSI', '2150 LBS'),
+                    '6PLY': ('334 KPA/50 PSI', '1820 LBS'),
+                    '6PR': ('334 KPA/50 PSI', '1820 LBS')
+                }
+            }
+        }
+
+        # Asignar valores solo si tenemos todos los datos necesarios
+        if rin and ply_pr:
+            type_group = ratings_map[rin].get(tire_type, ratings_map[rin].get('', {}))
+            if ply_pr in type_group:
+                specs['tire_rating'], specs['lbs_wheels'] = type_group[ply_pr]
             else:
-                # Limpiar todos los campos si no se encuentra el producto
-                record.name_trailer = False
-                record.dry_weight = 0.0
-                record.gvwr_related = ''
-                record.gawr_related = ''
-                record.tire_typ = ''
-                record.model_year = ''
-                record.axles = ''
-                record.tongue_type = ''
-                record.lenght = ''
-                record.wheel = ''
+                # Si no encuentra coincidencia exacta, usar el primer valor disponible
+                first_rating = next(iter(type_group.values()), ('', ''))
+                specs['tire_rating'], specs['lbs_wheels'] = first_rating
 
-    def _compute_pdf_filename(self):
-        for record in self:
-            record.pdf_filename = f"vin_label_{record.name or 'unknown'}.pdf"
-    def generate_manual_pdf(self):
-        buffer = BytesIO()
-        c = canvas.Canvas(buffer, pagesize=letter)
-        width, height = letter
-        product_vin = self.vin_registry.vin if self.vin_registry else ""
-        model_string = self.model_trailer or ""
+        # Siempre asignar el rin_jante del campo correspondiente
+        specs['rim_jante'] = self.rin_jante or ''
+
+        # Si no se encontró RIN pero hay wheel, usar el valor completo
+        if not rin and self.wheel:
+            specs['rin'] = self.wheel
+
+    def _prepare_api_data(self, weight_kg=None):
+        """Prepara los datos para enviar a la API de impresión"""
+        printer = self._get_active_printer()
+        if not printer:
+            raise UserError("No hay impresoras activas configuradas")
+        if not self.vin_registry:
+            raise UserError("No se ha asignado un VIN")
+            
+        # Inicializar especificaciones de llantas
+        tire_specs = {
+            'tire_rating': '',
+            'lbs_wheels': '',
+            'rin': '',
+            'rim_jante': ''
+        }
+        
+        self._set_tire_ratings(tire_specs)
+        
+        # Calcular pesos
         weight_lb = self.dry_weight or 0
-        weight_kg = int(round(weight_lb * 0.453592))
-        rin = self.wheel or "MANUAL_WHEEL"
-        lbs_wheels = ""
-        tire_rating = ""
-        gvwr_kg = self.gvwr.weight_kg if self.gvwr else 0
-        gvwr_lb = self.gvwr.weight_lb if self.gvwr else 0
-        num_rin = ""
-        gawr_libras = self.gawr.name
-        gawr_lb = gawr_libras[5:9]
-        gawr_kg = round(float(gawr_lb) * 0.453592, 1)
-        wheel_input = (self.wheel or "").upper()
-        rin = ""
-        if wheel_input:
-            full_tire_array = wheel_input.split(" ") 
-            rin = full_tire_array[1] if len(full_tire_array) > 1 else ""
-            if len(full_tire_array) > 10:
-                num_rin = f"{full_tire_array[8]} {full_tire_array[9]} {full_tire_array[10]}"
+        if weight_kg is None:
+            weight_kg = int(weight_lb * 0.453592)
+        
+        # Extraer valores numéricos
+        gvwr_lb = self.extract_numeric_value(self.gvwr_related)
+        gvwr_kg = int(gvwr_lb * 0.453592)
+        gawr_lb = self.extract_numeric_value(self.gawr_related)
+        gawr_kg = int(gawr_lb * 0.453592)
 
-        if 'SINGLE' in wheel_input and 'R15' in wheel_input and ('10PLY' in wheel_input or '10PR' in wheel_input):
-            lbs_wheels = '550 KPA/80 PSI'
-            tire_rating = '2830 LBS'
-        elif 'SINGLE' in wheel_input and 'R15' in wheel_input and ('8PLY' in wheel_input or '8PR' in wheel_input):
-            lbs_wheels = '448 KPA/65 PSI'
-            tire_rating = '2150 LBS'
-        elif 'SINGLE' in wheel_input and 'R15' in wheel_input and ('6PLY' in wheel_input or '6PR' in wheel_input):
-            lbs_wheels = '334 KPA/50 PSI'
-            tire_rating = '1820 LBS'
-        elif 'SINGLE' in wheel_input and 'R16' in wheel_input and ('10PLY' in wheel_input or '10PR' in wheel_input):
-            lbs_wheels = '550 KPA/80 PSI'
-            tire_rating = '3520 LBS'
-        elif 'DUAL' in wheel_input and 'R16' in wheel_input and ('10PLY' in wheel_input or '10PR' in wheel_input):
-            lbs_wheels = '550 KPA/80 PSI'
-            tire_rating = '3080 LBS'
-        elif 'SINGLE' in wheel_input and 'R16' in wheel_input and ('14PLY' in wheel_input or '14PR' in wheel_input):
-            lbs_wheels = '758 KPA/110 PSI'
-            tire_rating = '4400 LBS'
-        elif 'DUAL' in wheel_input and 'R16' in wheel_input and ('14PLY' in wheel_input or '14PR' in wheel_input):
-            lbs_wheels = '758 KPA/110 PSI'
-            tire_rating = '3860 LBS'
-        elif 'SUPER SINGLE' in wheel_input and 'R17.5' in wheel_input and ('18PLY' in wheel_input or '18PR' in wheel_input):
-            lbs_wheels = '862 KPA/125 PSI'
-            tire_rating = '6005 LBS'
-        elif 'DUAL' in wheel_input and 'R17.5' in wheel_input and ('18PLY' in wheel_input or '18PR' in wheel_input):
-            lbs_wheels = '862 KPA/125 PSI'
-            tire_rating = '5675 LBS'
-
-        c.setFont("Helvetica", 10)
-        y_position = height - 20 * mm
-        c.drawString(20 * mm, y_position, f"The weight of the cargo should never exceed {weight_kg} kg or {weight_lb} lbs")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, f"le poids du chargement ne doit jamais depasser {weight_kg} kg ou {weight_lb} lb.")
-        y_position -= 10 * mm
-
-        c.drawString(20 * mm, y_position, rin)
-        c.drawString(100 * mm, y_position, lbs_wheels)
-        y_position -= 10 * mm
-
-        c.drawString(20 * mm, y_position, "MANUFACTURED BY/FABRIQUE PAR: HORIZON TRAILERS MEXICO S. DE R.L. DE C.V.")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, f"GVWR / PNBV {gvwr_kg} KG ({gvwr_lb} LB) ")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, f"GAWR (EACH AXLE) / PNBE ( CHAQUE ESSIEU) {gawr_kg} KG ({gawr_lb} LB)")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, f"TIRE/PNEU {rin} RIM/JANTE {num_rin} {tire_rating}")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, f"COLD INFL. PRESS/PRESS. DE GONFL. A FROID {lbs_wheels}/LCP SINGLE")
-        y_position -= 10 * mm
-
-        c.drawString(20 * mm, y_position, "THIS VEHICLE TO ALL APPLICABLE U.S. FEDERAL MOTOR SAFETY STANDARDS")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, "IN EFFECT ON THE DATE OF MANUFACTURE SHOWN ABOVE.")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, "THIS VEHICLE CONFORMS TO ALL APPLICABLE STANDARDS PRESCRIBED UNDER CANADA.")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, "CE VEHICLE EST CONFORME A TOUS LES NORMES EN VIGUEUR A LA DATE DE SA FABRICATION.")
-        y_position -= 5 * mm
-        c.drawString(20 * mm, y_position, "SUR LA SECURITÉ DES VARIÉGLES AUTOMOBILES DU CANADA EN VIGUEUR A LA DATE DE SA FABRICATION.")
-        y_position -= 10 * mm
-        c.drawString(20 * mm, y_position, f"VIN: {product_vin}")
-        c.drawString(100 * mm, y_position, "TYPE: TRA/REM")
-        c.drawString(180 * mm, y_position, f"MODEL: {model_string}")
-        c.save()
-        pdf_data = buffer.getvalue()
-        buffer.close()
-        return base64.b64encode(pdf_data)
+        return {
+            "ip": printer.printer_ip,
+            "port": printer.printer_port,
+            "weight_lb": weight_lb,
+            "weight_kg": weight_kg,
+            "lbs_wheels": tire_specs['lbs_wheels'],
+            "rim": tire_specs['rin'],
+            "tire_rating": tire_specs['tire_rating'],
+            "product_vin": self.vin_registry.vin,
+            "gvwr_kg": gvwr_kg,
+            "gvwr_lb": gvwr_lb,
+            "gawr_kg": gawr_kg,
+            "gawr_lb": gawr_lb,
+            "rim_jante": tire_specs['rim_jante'],
+            "model_string": self.model_trailer or "",
+            "fecha_impresion": self.date.strftime('%m/%Y') if self.date else datetime.now().strftime('%m/%Y'),
+            "auth_token": printer.auth_token or ''
+        }
 
     def print_manual_vins(self):
-        pdf_data = self.generate_manual_pdf()
-        self.write({
-            'pdf_file': pdf_data
-        })
+        """Acción principal para imprimir etiquetas manuales"""
+        self.ensure_one()
+        print_data = self._prepare_api_data()
+        self._send_to_printer_api(print_data)
+        
         return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/print.manual/{self.id}/pdf_file/{self.pdf_filename}?download=true',
-            'target': 'self',
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Éxito',
+                'message': 'La etiqueta se ha enviado a la impresora',
+                'type': 'success',
+                'sticky': False,
+            }
         }
-    
-
-
 

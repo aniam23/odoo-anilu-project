@@ -17,6 +17,8 @@
                             <field name="model_trailer"/>
                             <field name="name_trailer"/>
                             <field name="wheel"/>
+                            <field name="date"/>
+                            <field name="rin_jante"/>
                             <field name="dry_weight"/>
                             <field name="gvwr_related" />
                             <field name="gawr_related"/>
