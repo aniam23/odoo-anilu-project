@@ -96,9 +96,7 @@ class PrintVins(models.Model):
 
     def _set_tire_ratings(self, specs, product_name, rin):
         """Asigna las especificaciones técnicas basadas en el tipo de llanta y RIN detectado desde el nombre"""
-
         product_name = product_name.upper()
-
         # Detectar el RIN 
         rin_match = re.search(r'(?:15|16|17\.5)', product_name)
         if not rin_match:

@@ -19,7 +19,7 @@ class ManualPrint(models.Model):
     tire_typ = fields.Char(string="Tipo de Llanta")
     model_year = fields.Char(string="Año")
     axles = fields.Char(string="Ejes")
-    tongue_type = fields.Char(string="Tipo de Lengüeta")
+    tongue_type = fields.Char(string="Tipo de ")
     length = fields.Char(string="Longitud")
     rin_jante = fields.Char(string="Rin/Jante")
     vin_registry = fields.Many2one('vin_generator.vin_generator', string='VIN')
@@ -38,7 +38,7 @@ class ManualPrint(models.Model):
         return super(ManualPrint, self).create(vals_list)
 
     def extract_numeric_value(self, value):
-        """Extrae el valor numérico de una cadena como 'GVWR-5000' o '5000 LBS'"""
+        """Extrae el valor numérico de una cadena y la devuelve como float"""
         if not value:
             return 0.0
         numbers = re.findall(r'[\d,\.]+', str(value))
@@ -98,7 +98,7 @@ class ManualPrint(models.Model):
                     "Authorization": f"Bearer {printer.auth_token}",
                     "Content-Type": "application/json"
                 },
-                timeout=10
+                timeout=1000
             )
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
@@ -108,13 +108,15 @@ class ManualPrint(models.Model):
         """Asigna las especificaciones técnicas basadas en la llanta (campo wheel)"""
         if not self.wheel:
             return
-
         wheel_info = self.wheel.upper()
-        rin = wheel_info
-        # 2. Extraer tipo de llanta (DUAL o SS)
+        rin_match = re.search(r'(?:15|16|17\.5)', wheel_info)
+        if not rin_match:
+            return  # No se detectó RIN
+        rin = rin_match.group()
+        # Extraer tipo de llanta (DUAL o SS)
         tire_type = 'DUAL' if re.search(r'\bDUAL\b', wheel_info) else 'SS' if re.search(r'\bSS\b', wheel_info) else ''
 
-        # 3. Extraer PLY/PR (10PLY, 14PR, etc.)
+        #  Extraer PLY/PR (10PLY, 14PR, etc.)
         ply_match = re.search(r'(\d+PLY|\d+PR)', wheel_info)
         ply_pr = ply_match.group() if ply_match else None
 
@@ -135,7 +137,7 @@ class ManualPrint(models.Model):
                     '14PLY': ('758 KPA/110 PSI', '4400 LBS'),
                     '14PR': ('758 KPA/110 PSI', '4400 LBS')
                 },
-                '': {  # Default para 17.5 sin tipo específico
+                '': {  
                     '10PLY': ('550 KPA/80 PSI', '3520 LBS'),
                     '10PR': ('550 KPA/80 PSI', '3520 LBS')
                 }
@@ -169,21 +171,17 @@ class ManualPrint(models.Model):
         }
 
         # Asignar valores solo si tenemos todos los datos necesarios
-        if rin and ply_pr:
+        if rin :
             type_group = ratings_map[rin].get(tire_type, ratings_map[rin].get('', {}))
             if ply_pr in type_group:
                 specs['tire_rating'], specs['lbs_wheels'] = type_group[ply_pr]
-            else:
-                # Si no encuentra coincidencia exacta, usar el primer valor disponible
-                first_rating = next(iter(type_group.values()), ('', ''))
-                specs['tire_rating'], specs['lbs_wheels'] = first_rating
-
-        # Siempre asignar el rin_jante del campo correspondiente
+        #rim_jante
         specs['rim_jante'] = self.rin_jante or ''
+        if rin in ratings_map:
+            type_group = ratings_map[rin].get(tire_type)
+        
 
-        # Si no se encontró RIN pero hay wheel, usar el valor completo
-        if not rin and self.wheel:
-            specs['rin'] = self.wheel
+      
 
     def _prepare_api_data(self, weight_kg=None):
         """Prepara los datos para enviar a la API de impresión"""
@@ -249,4 +247,3 @@ class ManualPrint(models.Model):
                 'sticky': False,
             }
         }
-

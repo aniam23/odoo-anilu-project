@@ -3,10 +3,10 @@
     'name': "Print vin labels",
 
     'summary': """
-        Print vin labels""", 
+        Print Vin Labels""", 
 
     'description': """
-        print labels  vin of trailers
+        Print Labels  Vin Of Trailers
     """,
 
     'author': "Anilu Amado Aguero",
